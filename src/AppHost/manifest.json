@@ -1,0 +1,154 @@
+{
+  "resources": {
+    "homelab": {
+      "error": "This resource does not support generation in the manifest."
+    },
+    "cache": {
+      "type": "container.v1",
+      "connectionString": "{cache.bindings.tcp.host}:{cache.bindings.tcp.port},password={cache-password.value}{cond-cache-bindings-tcp-tlsenabled-3eddb73a.connectionString}",
+      "image": "docker.io/library/redis:8.6",
+      "entrypoint": "/bin/sh",
+      "args": [
+        "-c",
+        "redis-server --requirepass $REDIS_PASSWORD"
+      ],
+      "env": {
+        "REDIS_PASSWORD": "{cache-password.value}"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "redis",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "targetPort": 6379
+        }
+      }
+    },
+    "appdb": {
+      "type": "container.v1",
+      "connectionString": "Host={appdb.bindings.tcp.host};Port={appdb.bindings.tcp.port};Username=postgres;Password={appdb-password.value}",
+      "image": "docker.io/library/postgres:17.6",
+      "env": {
+        "POSTGRES_HOST_AUTH_METHOD": "scram-sha-256",
+        "POSTGRES_INITDB_ARGS": "--auth-host=scram-sha-256 --auth-local=scram-sha-256",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": "{appdb-password.value}"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "targetPort": 5432
+        }
+      }
+    },
+    "api": {
+      "type": "project.v1",
+      "path": "../Api/Template.Api.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{api.bindings.http.targetPort}",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__cache": "{cache.connectionString}",
+        "CACHE_HOST": "{cache.bindings.tcp.host}",
+        "CACHE_PORT": "{cache.bindings.tcp.port}",
+        "CACHE_PASSWORD": "{cache-password.value}",
+        "CACHE_URI": "{cache.bindings.tcp.scheme}://:{cache-password-uri-encoded.value}@{cache.bindings.tcp.host}:{cache.bindings.tcp.port}",
+        "ConnectionStrings__appdb": "{appdb.connectionString}",
+        "APPDB_HOST": "{appdb.bindings.tcp.host}",
+        "APPDB_PORT": "{appdb.bindings.tcp.port}",
+        "APPDB_USERNAME": "postgres",
+        "APPDB_PASSWORD": "{appdb-password.value}",
+        "APPDB_URI": "postgresql://postgres:{appdb-password-uri-encoded.value}@{appdb.bindings.tcp.host}:{appdb.bindings.tcp.port}",
+        "APPDB_JDBCCONNECTIONSTRING": "jdbc:postgresql://{appdb.bindings.tcp.host}:{appdb.bindings.tcp.port}",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "{homelab-dashboard.bindings.otlp-grpc.url}",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
+        "OTEL_SERVICE_NAME": "api"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http"
+        }
+      }
+    },
+    "cache-password": {
+      "type": "parameter.v0",
+      "value": "{cache-password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 22,
+              "special": false
+            }
+          }
+        }
+      }
+    },
+    "cache-password-uri-encoded": {
+      "type": "annotated.string",
+      "value": "{cache-password.value}",
+      "filter": "uri"
+    },
+    "appdb-password": {
+      "type": "parameter.v0",
+      "value": "{appdb-password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 22
+            }
+          }
+        }
+      }
+    },
+    "appdb-password-uri-encoded": {
+      "type": "annotated.string",
+      "value": "{appdb-password.value}",
+      "filter": "uri"
+    },
+    "homelab-dashboard": {
+      "type": "container.v1",
+      "image": "mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest",
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 18888,
+          "external": true
+        },
+        "otlp-grpc": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 18889
+        },
+        "otlp-http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 18890
+        }
+      }
+    },
+    "cond-cache-bindings-tcp-tlsenabled-3eddb73a": {
+      "type": "value.v0",
+      "connectionString": ""
+    }
+  }
+}

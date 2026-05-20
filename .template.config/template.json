@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "identity": "DotNetProjectTemplate",
+  "name": ".NET Project Template",
+  "description": "A modern .NET project template with Event Sourcing, DDD, and Aspire",
+  "shortName": "dotnet-template",
+  "author": "pmdevers",
+  "classifications": ["Web", "API", "Backend"],
+  "preferNameDirectory": true,
+  "symbols": {
+    "namespace": {
+      "type": "parameter",
+      "description": "The namespace for the project",
+      "replaceInCode": true,
+      "fileRename": "Template"
+    }
+  }
+}

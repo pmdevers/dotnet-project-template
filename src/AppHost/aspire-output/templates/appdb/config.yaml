@@ -1,0 +1,13 @@
+---
+apiVersion: "v1"
+kind: "ConfigMap"
+metadata:
+  name: "appdb-config"
+  labels:
+    app.kubernetes.io/name: "{{ .Chart.Name }}"
+    app.kubernetes.io/component: "appdb"
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+data:
+  POSTGRES_HOST_AUTH_METHOD: "{{ .Values.config.appdb.POSTGRES_HOST_AUTH_METHOD }}"
+  POSTGRES_INITDB_ARGS: "{{ .Values.config.appdb.POSTGRES_INITDB_ARGS }}"
+  POSTGRES_USER: "{{ .Values.config.appdb.POSTGRES_USER }}"

@@ -1,0 +1,28 @@
+{
+  "projectPath": ".",
+  "inputPath": "aspirate-output",
+  "outputPath": "aspirate-output",
+  "namespace": "Template",
+  "containerImageTags": [
+    "latest"
+  ],
+  "imagePullPolicy": "IfNotPresent",
+  "containerBuilder": "docker",
+  "kubeContext": "minikube",
+  "outputFormat": "kustomize",
+  "privateRegistryEmail": "aspir8@aka.ms",
+  "includeDashboard": false,
+  "useCustomNamespace": true,
+  "secrets": {
+    "salt": "uD1bKqrYQiua31Am",
+    "hash": "N26L8GRcWXe\u002BYqJxe1c8dS5TyLV66eh8Glx9Nj2W1Yw=",
+    "secrets": {
+      "cache-password": {
+        "value": "uD1bKqrYQiua31AmmKeKx7oUYdX/mmbjfgB\u002Bti\u002BD3S9q5zjcAojW9xjU6aAirXsCue4="
+      },
+      "appdb-password": {
+        "value": "uD1bKqrYQiua31AmRlQwhUW7Aj7/gpKrbOE/hCuFsg8z6xbMSJ27qCCszagHwnQrud0="
+      }
+    }
+  }
+}

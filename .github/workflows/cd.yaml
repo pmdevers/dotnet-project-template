@@ -1,0 +1,31 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write
+  actions: read
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yaml
+
+  version:
+    uses: ./.github/workflows/version.yaml
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [version, test]
+    uses: ./.github/workflows/release.yaml
+    with:
+      version: ${{ needs.version.outputs.version }}
