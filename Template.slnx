@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Api/Template.Api.csproj" />
+    <Project Path="src/AppHost/Template.AppHost.csproj" Id="919a3ac8-27a4-4137-bd75-717333f1698c" />
+    <Project Path="src/ServiceDefaults/Template.ServiceDefaults.csproj" />
+    <Project Path="src/Generators/Template.Generators.csproj" Id="d8046f65-0035-4068-abd5-be1ff0bb822e" />
+    <Project Path="src/WebUi/Template.WebUi.csproj" Id="8d5d0927-add1-4905-875d-72be5c0c910c" />
+  </Folder>
+  <Folder Name="/test/" />
+  <Folder Name="/_SolutionItems/">
+    <File Path=".dockerignore" />
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="CODE_OF_CONDUCT.md" />
+    <File Path="Directory.Packages.props" />
+    <File Path="docfx.json" />
+    <File Path="index.md" />
+    <File Path="LICENSE" />
+    <File Path="nuget.config" />
+    <File Path="toc.yml" />
+  </Folder>
+</Solution>
