@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version to release'
+        required: true
+        type: string
+      image:
+        description: 'Optional prebuilt image reference (unused when building via SDK)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION="${{ inputs.version }}"
+          # Remove 'v' prefix if present
+          VERSION=${VERSION#v}
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Build image reference
+        id: image
+        shell: bash
+        run: |
+          OWNER_LOWER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+          REPOSITORY="ghcr.io/${OWNER_LOWER}/template-api"
+          IMAGE="${REPOSITORY}:${{ steps.version.outputs.version }}"
+          echo "repository=${REPOSITORY}" >> $GITHUB_OUTPUT
+          echo "image=${IMAGE}" >> $GITHUB_OUTPUT
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore solution
+        run: dotnet restore Template.slnx
+
+      - name: Publish API container image (SDK)
+        run: |
+          dotnet publish src/Api/Template.Api.csproj \
+            --configuration Release \
+            --no-restore \
+            /t:PublishContainer \
+            -p:ContainerRepository=${{ steps.image.outputs.repository }} \
+            -p:ContainerImageTag=${{ steps.version.outputs.version }}
+
+      - name: Push API image
+        run: docker push ${{ steps.image.outputs.image }}
+
+      - name: Download CLI artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: cli-binaries
+          path: cli
+
+      - name: Generate install manifest
+        run: |
+          chmod +x ./cli/k8s-frontman_${{ steps.version.outputs.version }}_linux_x64
+          ./cli/k8s-frontman_${{ steps.version.outputs.version }}_linux_x64 install \
+            --output install.yaml
+
+      - name: Generate checksums
+        run: |
+          cd cli
+          sha256sum k8s-frontman_* > k8s-frontman_${{ steps.version.outputs.version }}_checksums.txt
+          cd ..
+
+      - name: Install Syft
+        uses: anchore/sbom-action/download-syft@v0.17.0
+
+      - name: Generate SBOM for API image
+        run: |
+          syft ${{ steps.image.outputs.image }} \
+            -o cyclonedx-json > sbom.json
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            cli/*
+            install.yaml
+            sbom.json
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
