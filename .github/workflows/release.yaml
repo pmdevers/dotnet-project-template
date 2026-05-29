@@ -23,7 +23,7 @@ jobs:
       APPHOST_DIR: ./src/AppHost
       CHART_NAME: template-app
       CHARTS_PATH: ./deploy
-
+      VERSION: ${{ inputs.version }}
     steps:
       - uses: actions/checkout@v6
 
@@ -61,8 +61,10 @@ jobs:
       - name: Package Helm chart
         run: |
           mkdir -p $CHARTS_PATH/package
+          VERSION=${VERSION#v}
           helm package $CHARTS_PATH \
             --destination $CHARTS_PATH/package
+            --version $VERSION
 
       - name: Upload Helm chart artifact
         uses: actions/upload-artifact@v7
