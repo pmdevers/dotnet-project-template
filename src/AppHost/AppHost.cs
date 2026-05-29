@@ -8,6 +8,7 @@ var registery = builder.AddContainerRegistry("ghcr", "ghcr.io", "pmdevers");
 
 var imageName = Environment.GetEnvironmentVariable("IMAGE_NAME") ?? "my-template-app";
 var imageTag = Environment.GetEnvironmentVariable("IMAGE_TAG") ?? "latest";
+var version = Environment.GetEnvironmentVariable("VERSION") ?? "0.0.1";
 
 var kubernetes = builder.AddKubernetesEnvironment("homelab")
     .WithHelm(helm =>
