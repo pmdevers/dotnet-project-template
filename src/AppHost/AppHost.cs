@@ -6,11 +6,14 @@ var builder = DistributedApplication.CreateBuilder(args);
 var registery = builder.AddContainerRegistry("ghcr", "ghcr.io", "pmdevers");
 #pragma warning restore ASPIRECOMPUTE003 // AddContainerRegistry is an experimental API and may change in future releases.
 
+var imageName = Environment.GetEnvironmentVariable("IMAGE_NAME") ?? "my-template-app";
+var imageTag = Environment.GetEnvironmentVariable("IMAGE_TAG") ?? "latest";
+
 var kubernetes = builder.AddKubernetesEnvironment("homelab")
     .WithHelm(helm =>
     {
         helm.WithChartName("my-template-app")
-            .WithChartVersion("1.0.0")
+            .WithChartVersion(imageTag)
             .WithChartDescription("My template application deployed to Kubernetes")
             .WithReleaseName("template-app")
             .WithNamespace("template");
@@ -28,8 +31,7 @@ builder.AddProject<Projects.Template_Api>("template-api")
     .WithContainerRegistry(registery)
     .WithImagePushOptions((context) =>
     {
-        var image_tag = Environment.GetEnvironmentVariable("VERSION") ?? "latest";
-        context.Options.RemoteImageTag = image_tag;
+        context.Options.RemoteImageTag = imageTag;
     })
     .WithHttpHealthCheck("/health")
     .WithEnvironment("ASPNETCORE_ENVIRONMENT", builder.Environment.EnvironmentName)

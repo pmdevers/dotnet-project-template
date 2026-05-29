@@ -19,12 +19,13 @@ jobs:
     env:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository_owner }}/template-app
+      IMAGE_TAG: ${{ inputs.version }}
       APPHOST_DIR: ./src/AppHost
       CHART_NAME: template-app
       CHARTS_PATH: ./deploy
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Extract version
         id: version
@@ -33,13 +34,12 @@ jobs:
           # Remove 'v' prefix if present
           VERSION=${VERSION#v}
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          echo "image_tag=${VERSION}" >> $GITHUB_OUTPUT
 
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 'latest'
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
 
@@ -47,17 +47,16 @@ jobs:
         run: dotnet tool install --global aspire.cli
 
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate containers
-        run: aspire do push      
-
-      - name: Publish Helm chart using Aspire
-        run: aspire publish --output $CHARTS_PATH
+      - name: Generate containers and Helm chart
+        run: |
+          aspire do push
+          aspire publish --output $CHARTS_PATH
 
       - name: Package Helm chart
         run: |
@@ -66,13 +65,13 @@ jobs:
             --destination $CHARTS_PATH/package
 
       - name: Upload Helm chart artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: helm-chart
           path: ${{ env.CHARTS_PATH }}/package
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             deploy/package/*.tgz

@@ -15,6 +15,7 @@ builder.Services.AddServiceConfigs(startupLogger, builder);
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
-app.UseAppMiddleware();
 
-app.Run();
+await app.UseAppMiddleware();
+
+await app.RunAsync();
