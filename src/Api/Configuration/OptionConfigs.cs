@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json.Serialization;
 using Template.Api.Domain.Abstractions;
-using Template.Api.Domain.ValueObjects;
 
 namespace Template.Api.Configuration;
 
@@ -15,7 +14,7 @@ public static class OptionConfigs
         {
             services
             .Configure<DatabaseOptions>(configuration.GetSection("DatabaseOptions"))
-            
+
             // Configure Web Behavior
             .Configure<CookiePolicyOptions>(options =>
             {
@@ -30,7 +29,7 @@ public static class OptionConfigs
 
             if (builder.Environment.IsDevelopment())
             {
-                
+
             }
 
             logger.LogInformation("{Project} were configured", "Options");

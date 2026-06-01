@@ -1,6 +1,4 @@
-﻿using Template.Api.Infrastructure;
-
-namespace Template.Api.Configuration;
+﻿namespace Template.Api.Configuration;
 
 public static class ServiceConfigs
 {
@@ -9,8 +7,6 @@ public static class ServiceConfigs
 
         public IServiceCollection AddServiceConfigs(ILogger logger, WebApplicationBuilder builder)
         {
-            services.AddInfrastructure(builder.Configuration, logger);
-
             services.AddOpenApi();
 
             logger.LogInformation("{Project} services registered", "Services");

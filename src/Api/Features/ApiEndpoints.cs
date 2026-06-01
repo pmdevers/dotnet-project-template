@@ -7,6 +7,7 @@ public static class ApiEndpoints
 {
     extension(WebApplication app)
     {
+
         public WebApplication MapApiEndpoints()
         {
             app.MapCarEndpoints();
