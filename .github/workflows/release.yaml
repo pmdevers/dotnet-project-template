@@ -57,10 +57,15 @@ jobs:
 
       - name: Package Helm chart
         run: |
+          CHART_SOURCE="${APPHOST_DIR}/aspire-output"
           mkdir -p $CHARTS_PATH/package
-          helm package $CHARTS_PATH \
-            --destination $CHARTS_PATH/package \
-            --version $VERSION
+          
+          # Update Chart.yaml version
+          sed -i "s/version: .*/version: \"$VERSION\"/" $CHART_SOURCE/Chart.yaml
+          sed -i "s/appVersion: .*/appVersion: \"$VERSION\"/" $CHART_SOURCE/Chart.yaml
+          
+          helm package $CHART_SOURCE \
+            --destination $CHARTS_PATH/package
 
       - name: Upload Helm chart artifact
         uses: actions/upload-artifact@v7
