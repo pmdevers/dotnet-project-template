@@ -25,7 +25,8 @@ jobs:
       CHARTS_PATH: ./deploy
       VERSION: ${{ inputs.version }}
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@v6
 
       - name: Normalize version
         run: |
@@ -33,13 +34,13 @@ jobs:
           VERSION="${VERSION#v}"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
-      - uses: oven-sh/setup-bun@v2
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: 'latest'
 
-      - uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: "10.0.x"
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v5
 
       - name: Install Aspire CLI
         run: dotnet tool install --global aspire.cli
