@@ -1,4 +1,4 @@
-﻿using Template.Api.Domain.Entities;
+using Template.Api.Domain.Entities;
 using Template.Api.Domain.ValueObjects;
 
 namespace Template.Tests.Domain.Entities;

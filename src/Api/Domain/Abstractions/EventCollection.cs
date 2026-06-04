@@ -1,10 +1,10 @@
-﻿namespace Template.Api.Domain.Abstractions;
+namespace Template.Api.Domain.Abstractions;
 
 public class EventCollection : IEnumerable<DomainEvent>
 {
-    private DomainEvent[] _events = [];
+    private readonly DomainEvent[] _events = [];
     private readonly List<DomainEvent> _uncomitted = [];
-    private TimeProvider _timeProvider;
+    private readonly TimeProvider _timeProvider;
     private EventCollection(DomainEvent[]? events, TimeProvider? timeProvider = null)
     {
         _events = events ?? [];
@@ -30,12 +30,12 @@ public class EventCollection : IEnumerable<DomainEvent>
         ? _uncomitted.LastOrDefault()?.OccurredOn
         : _events.LastOrDefault()?.OccurredOn;
 
-    public void Append(DomainEvent @event) 
+    public void Append(DomainEvent @event)
         => _uncomitted.Add(@event with { OccurredOn = _timeProvider.GetUtcNow() });
 
     public static EventCollection Empty(TimeProvider? timeProvider = null) => new(null, timeProvider);
 
-    public static EventCollection From(DomainEvent[]? events = null, TimeProvider? timeProvider = null) 
+    public static EventCollection From(DomainEvent[]? events = null, TimeProvider? timeProvider = null)
         => new(events, timeProvider);
 
     public EventCollection GetUncommittedEvents()

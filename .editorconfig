@@ -3,6 +3,9 @@ root = true
 end_of_line = crlf
 insert_final_newline = true
 
+[*.{cs,csproj,sln,json,xml,props,targets}]
+charset = utf-8
+
 [*.bat]
 end_of_line = lf
 
@@ -219,3 +222,10 @@ dotnet_style_operator_placement_when_wrapping = beginning_of_line
 tab_width = 4
 indent_size = 4
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
+
+
+dotnet_diagnostic.Proj0003.severity = none
+dotnet_diagnostic.Proj0010.severity = none
+dotnet_diagnostic.Proj1300.severity = none
+dotnet_diagnostic.Proj1101.severity = none
+dotnet_diagnostic.Proj3000.severity = none

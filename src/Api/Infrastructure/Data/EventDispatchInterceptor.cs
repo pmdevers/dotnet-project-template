@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Infrastructure.Data;

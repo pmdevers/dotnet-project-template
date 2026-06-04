@@ -1,4 +1,4 @@
-﻿namespace Template.Api.Configuration;
+namespace Template.Api.Configuration;
 
 public class DatabaseOptions
 {

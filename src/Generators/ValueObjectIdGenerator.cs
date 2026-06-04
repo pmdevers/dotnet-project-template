@@ -86,8 +86,7 @@ public class ValueObjectIdGenerator : IIncrementalGenerator
         return new TypeDeclarationInfo(
             typeSymbol.Name,
             namespaceName,
-            underlyingType,
-            typeDeclaration is StructDeclarationSyntax
+            underlyingType
         );
     }
 
@@ -126,7 +125,6 @@ public class ValueObjectIdGenerator : IIncrementalGenerator
             { "namespace", info.Namespace ?? string.Empty },
             { "type_name", $"{info.TypeName}Id" },
             { "underlying_type", info.UnderlyingType },
-            { "keyword", info.IsStruct ? "struct" : "readonly struct" },
             { "is_guid", isGuid },
             { "is_not_guid", !isGuid }
         };
@@ -134,11 +132,10 @@ public class ValueObjectIdGenerator : IIncrementalGenerator
         return TemplateHelper.RenderTemplate(template, parameters);
     }
 
-    private sealed class TypeDeclarationInfo(string typeName, string @namespace, string underlyingType, bool isStruct)
+    private sealed class TypeDeclarationInfo(string typeName, string @namespace, string underlyingType)
     {
         public string TypeName { get; } = typeName;
         public string Namespace { get; } = @namespace;
         public string UnderlyingType { get; } = underlyingType;
-        public bool IsStruct { get; } = isStruct;
     }
 }

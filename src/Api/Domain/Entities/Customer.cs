@@ -1,4 +1,4 @@
-﻿using Template.Api.Domain.Abstractions;
+using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.Entities;
 

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.ValueObjects;

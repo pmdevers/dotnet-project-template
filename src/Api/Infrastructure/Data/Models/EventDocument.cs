@@ -1,4 +1,4 @@
-﻿namespace Template.Api.Infrastructure.Data.Models;
+namespace Template.Api.Infrastructure.Data.Models;
 
 public class EventDocument
 {

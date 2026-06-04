@@ -1,9 +1,9 @@
-﻿using Template.Api.Domain.Abstractions;
+using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
 
 namespace Template.Api.Features.Reservations;
 
-public class GetReservationById
+public static class GetReservationById
 {
     public static async Task<IResult> Handle(ReservationId id, IUnitOfWork uow)
     {

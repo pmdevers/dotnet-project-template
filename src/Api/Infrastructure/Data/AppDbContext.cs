@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
@@ -10,7 +10,7 @@ namespace Template.Api.Infrastructure.Data;
 public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IUnitOfWork
 {
     private Dictionary<string, AggregateRoot> EventSourced { get; } = [];
-    
+
     public DbSet<EventDocument> Events { get; set; }
     public DbSet<Car> Cars { get; set; }
 
@@ -55,10 +55,10 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
 
 public partial class AppDbContext : IRepository<Car, CarId>
 {
-    public void Add(Car entity) 
+    public void Add(Car entity)
         => Cars.Add(entity);
 
-    public void Delete(Car entity) 
+    public void Delete(Car entity)
         => Cars.Remove(entity);
 
     public Task<Car?> TryFindAsync(CarId id, CancellationToken cancellationToken = default)
@@ -69,7 +69,14 @@ public partial class AppDbContext : IRepository<Reservation, ReservationId>
 {
     public void Add(Reservation entity)
     {
-        EventSourced.Add(entity.Id.ToString(), entity);
+        var key = entity.Id.ToString();
+
+        if (string.IsNullOrEmpty(key))
+        {
+            throw new InvalidOperationException("Aggregate root must have a valid Id.");
+        }
+
+        EventSourced.Add(key, entity);
     }
 
     public void Delete(Reservation entity)
@@ -78,7 +85,13 @@ public partial class AppDbContext : IRepository<Reservation, ReservationId>
 
     public async Task<Reservation?> TryFindAsync(ReservationId id, CancellationToken cancellationToken = default)
     {
-        var events = await this.GetEventsAsync(id.ToString(), cancellationToken);
+        var key = id.ToString();
+
+        if (string.IsNullOrEmpty(key))
+        {
+            return null;
+        }
+        var events = await this.GetEventsAsync(key, cancellationToken);
 
         var domainEvents = events
             .Select(e => EventSerializer.Deserialize(e.Data, e.Type))

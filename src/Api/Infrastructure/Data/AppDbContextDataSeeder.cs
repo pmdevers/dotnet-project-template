@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Globalization;
 using Template.Api.Configuration;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
@@ -11,11 +12,11 @@ public class AppDbContextDataSeeder(AppDbContext dbContext, IOptions<DatabaseOpt
 {
     public DatabaseOptions? Options { get; } = options?.Value;
 
-    public async Task SeedAsync(bool recreate, CancellationToken cancellationToken)
+    public async Task SeedAsync(bool recreate, CancellationToken cancellationToken = default)
     {
         try
         {
-            if(recreate && Options?.RecreateOnStartup == true)
+            if (recreate && Options?.RecreateOnStartup == true)
             {
                 logger.LogWarning("DROPPING database for fresh start (DatabaseOptions:RecreateOnStartup = true)...");
                 await dbContext.Database.EnsureDeletedAsync(cancellationToken);
@@ -42,7 +43,7 @@ public class AppDbContextDataSeeder(AppDbContext dbContext, IOptions<DatabaseOpt
         var reservationRepo = dbContext.GetRepository<Reservation, ReservationId>();
 
         var car = Car.Create(new LicensePlate("GPP-30-T"));
-        var reservation = Reservation.Create(CustomerId.New(), DateOnly.Parse("2024-07-01"), DateOnly.Parse("2024-07-10"));
+        var reservation = Reservation.Create(CustomerId.New(), DateOnly.Parse("2024-07-01", CultureInfo.CurrentCulture), DateOnly.Parse("2024-07-10", CultureInfo.CurrentCulture));
 
         carRepo.Add(car);
         reservationRepo.Add(reservation);

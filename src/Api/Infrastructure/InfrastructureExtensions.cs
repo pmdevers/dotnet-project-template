@@ -1,4 +1,4 @@
-﻿using Template.Api.Infrastructure.Data;
+using Template.Api.Infrastructure.Data;
 using Template.Api.Infrastructure.EventBus;
 
 namespace Template.Api.Infrastructure;

@@ -7,7 +7,7 @@ namespace {{ namespace }}
 {{~ end ~}}
     [System.Runtime.CompilerServices.CompilerGenerated]
     [System.Text.Json.Serialization.JsonConverter(typeof({{ type_name }}.JsonConverter))]
-    public {{ keyword }} {{ type_name }} : System.IEquatable<{{ type_name }}>, System.IComparable<{{ type_name }}>
+    public readonly record struct {{ type_name }}
     {
         private readonly {{ underlying_type }} _value;
 
@@ -22,15 +22,6 @@ namespace {{ namespace }}
 
 {{~ end ~}}
         public static {{ type_name }} From({{ underlying_type }} value) => new {{ type_name }}(value);
-
-        public bool Equals({{ type_name }} other) => _value.Equals(other._value);
-        public override bool Equals(object? obj) => obj is {{ type_name }} other && Equals(other);
-        public override int GetHashCode() => _value.GetHashCode();
-        public override string ToString() => _value.ToString();
-        public int CompareTo({{ type_name }} other) => _value.CompareTo(other._value);
-
-        public static bool operator ==({{ type_name }} left, {{ type_name }} right) => left.Equals(right);
-        public static bool operator !=({{ type_name }} left, {{ type_name }} right) => !left.Equals(right);
 
         public static implicit operator {{ underlying_type }}({{ type_name }} id) => id._value;
         public static explicit operator {{ type_name }}({{ underlying_type }} value) => new {{ type_name }}(value);

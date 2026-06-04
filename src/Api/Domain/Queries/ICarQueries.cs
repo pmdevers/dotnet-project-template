@@ -1,4 +1,4 @@
-﻿using Template.Api.Domain.ValueObjects;
+using Template.Api.Domain.ValueObjects;
 
 namespace Template.Api.Domain.Queries;
 

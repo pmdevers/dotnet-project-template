@@ -1,4 +1,4 @@
-﻿using Template;
+using Template;
 
 // Features contain vertical-slice use-case handlers. They are allowed to use
 // Configuration (options, settings) but must remain ignorant of Infrastructure

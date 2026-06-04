@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 namespace Template.Api.Domain.Abstractions;
 
@@ -6,7 +6,7 @@ public abstract class AggregateRoot
 {
     private EventCollection _events = EventCollection.Empty();
 
-    public static T LoadFromHistory<T>(EventCollection history) 
+    public static T LoadFromHistory<T>(EventCollection history)
         where T : AggregateRoot, new()
     {
         var aggregate = new T();
@@ -46,7 +46,9 @@ public abstract class AggregateRoot
 
     private static void SafeInvokeMethod(Type type, object target, string name, params object[] args)
     {
+#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
         const BindingFlags privateOrPublicMethodFlags = BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+#pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
         try
         {
             type.InvokeMember(name, privateOrPublicMethodFlags, null, target, args);

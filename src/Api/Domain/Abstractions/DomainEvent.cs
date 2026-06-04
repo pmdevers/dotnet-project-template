@@ -1,4 +1,4 @@
-﻿namespace Template.Api.Domain.Abstractions;
+namespace Template.Api.Domain.Abstractions;
 
 public abstract record DomainEvent
 {

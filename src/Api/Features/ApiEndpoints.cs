@@ -1,4 +1,4 @@
-﻿using Template.Api.Features.Cars;
+using Template.Api.Features.Cars;
 using Template.Api.Features.Reservations;
 
 namespace Template.Api.Features;

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json.Serialization;
 using Template.Api.Domain.Abstractions;
 
@@ -26,11 +26,6 @@ public static class OptionConfigs
                 options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 options.SerializerOptions.Converters.Add(new ValueObjectJsonConverter());
             });
-
-            if (builder.Environment.IsDevelopment())
-            {
-
-            }
 
             logger.LogInformation("{Project} were configured", "Options");
 

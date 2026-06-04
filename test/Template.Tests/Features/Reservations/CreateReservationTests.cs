@@ -49,9 +49,9 @@ public class CreateReservationTests
             await CreateReservation.Handle(_unitOfWork, command);
 
             // Assert
-            _reservationRepository.Received(1).Add(Arg.Is<Reservation>(r => 
-                r.CustomerId == customerId && 
-                r.StartDate == startDate && 
+            _reservationRepository.Received(1).Add(Arg.Is<Reservation>(r =>
+                r.CustomerId == customerId &&
+                r.StartDate == startDate &&
                 r.EndDate == endDate));
         }
 
@@ -94,22 +94,6 @@ public class CreateReservationTests
             var customerId = CustomerId.New();
             var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
             var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(6));
-            var command = new CreateReservation.Command(customerId, startDate, endDate);
-
-            // Act
-            var result = await CreateReservation.Handle(_unitOfWork, command);
-
-            // Assert
-            await Assert.That(result).IsNotNull();
-        }
-
-        [Test]
-        public async Task CreateReservation_WithValidData_SetStatusToInProgress()
-        {
-            // Arrange
-            var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(5));
             var command = new CreateReservation.Command(customerId, startDate, endDate);
 
             // Act

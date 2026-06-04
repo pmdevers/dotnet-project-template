@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Queries;
 using Template.Api.Infrastructure.Data.Queries;

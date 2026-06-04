@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace Template.Api.Infrastructure.Data;
@@ -10,7 +10,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseNpgsql(
                 Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING")
-                ?? "Host=localhost;Database=streamsharp;Username=postgres;Password=postgres")
+                ?? throw new InvalidOperationException("POSTGRES_CONNECTION_STRING environment variable is not set."))
             .Options;
 
         return new AppDbContext(options);

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Infrastructure.Data;

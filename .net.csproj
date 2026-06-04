@@ -6,20 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="assets/**/*" />
+    <None Include="docs/**/*" />
+    <None Include=".config/**/*" />
+    <None Include=".template.config/**/*" />
+    
     <None Include="*.yaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="src\**" />
-    <Compile Remove="test\**" />
-    <EmbeddedResource Remove="src\**" />
-    <EmbeddedResource Remove="test\**" />
-    <None Remove="src\**" />
-    <None Remove="test\**" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Include=".bun-version" />
+    <None Include=".dockerignore" />
+    <None Include=".editorconfig" />
     <None Include=".globalconfig" />
+    <None Include="LICENSE" />
   </ItemGroup>
-
+  
 </Project>

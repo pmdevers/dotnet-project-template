@@ -1,4 +1,4 @@
-﻿using System.Threading.Channels;
+using System.Threading.Channels;
 using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Infrastructure.EventBus;

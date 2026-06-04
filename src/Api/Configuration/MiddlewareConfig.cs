@@ -1,4 +1,4 @@
-﻿using Scalar.AspNetCore;
+using Scalar.AspNetCore;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Features;
 using Template.WebUi;

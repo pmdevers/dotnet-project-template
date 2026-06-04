@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
 

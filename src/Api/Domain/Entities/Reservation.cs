@@ -1,4 +1,4 @@
-﻿using Template.Api.Domain.Abstractions;
+using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.Entities;
 
@@ -6,7 +6,7 @@ namespace Template.Api.Domain.Entities;
 public class Reservation : AggregateRoot
 {
     public ReservationId Id { get; private set; }
-    public CustomerId CustomerId { get; private set;  }
+    public CustomerId CustomerId { get; private set; }
     public CarId CarId { get; private set; }
     public DateOnly StartDate { get; private set; }
     public DateOnly EndDate { get; private set; }
@@ -22,9 +22,9 @@ public class Reservation : AggregateRoot
 
     public void AttachCar(CarId carId)
     {
-        if(CarId == CarId.Empty)
+        if (carId == CarId.Empty)
         {
-           throw new ArgumentNullException(nameof(CarId));
+            throw new ArgumentNullException(nameof(carId));
         }
         RecordEvent(new ReservationCarAttachedEvent(Id, carId));
     }
@@ -39,7 +39,7 @@ public class Reservation : AggregateRoot
 
     internal void Apply(ReservationCarAttachedEvent @event)
     {
-        CarId  = @event.CarId;
+        CarId = @event.CarId;
     }
 }
 

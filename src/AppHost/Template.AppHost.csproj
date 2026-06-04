@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>44de2c33-3e4c-4063-b83b-bcdbd04778f7</UserSecretsId>
+    <IsPackable>false</IsPackable>
+    <IsPublishable>true</IsPublishable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Api\Template.Api.csproj" />
+    <ProjectReference Include="../Api/Template.Api.csproj" />
   </ItemGroup>
 
 </Project>
