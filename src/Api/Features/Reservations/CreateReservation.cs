@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
+using Template.Api.Domain.ValueObjects;
 
 namespace Template.Api.Features.Reservations;
 
 public static class CreateReservation
 {
-    public record Command(CustomerId CustomerId, DateOnly StartDate, DateOnly EndDate);
+    public record Command(CustomerId CustomerId, ReservationDate StartDate, ReservationDate EndDate);
 
     public static async Task<IResult> Handle(
         [FromServices] IUnitOfWork uow,

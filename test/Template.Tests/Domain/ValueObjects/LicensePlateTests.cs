@@ -10,41 +10,41 @@ public class LicensePlateTests
         public async Task ThrowsOnNull()
         {
             // Act & Assert
-            await Assert.That(() => new LicensePlate(null!)).Throws<FormatException>();
+            await Assert.That(() => LicensePlate.Create(null!)).Throws<FormatException>();
         }
 
         [Test]
         public async Task ThrowsOnEmpty()
         {
             // Act & Assert
-            await Assert.That(() => new LicensePlate("")).Throws<FormatException>();
+            await Assert.That(() => LicensePlate.Create("")).Throws<FormatException>();
         }
 
         [Test]
         public async Task ThrowsOnWhitespace()
         {
             // Act & Assert
-            await Assert.That(() => new LicensePlate("   ")).Throws<FormatException>();
+            await Assert.That(() => LicensePlate.Create("   ")).Throws<FormatException>();
         }
 
         [Test]
         public async Task NormalizesToUpperCase()
         {
             // Act
-            var licensePlate = new LicensePlate("abc123");
+            var licensePlate = LicensePlate.Create("abc123");
 
             // Assert
-            await Assert.That(licensePlate.ToJsonValue()).IsEqualTo("ABC123");
+            await Assert.That(licensePlate.ToString()).IsEqualTo("ABC123");
         }
 
         [Test]
         public async Task TrimsWhitespace()
         {
             // Act
-            var licensePlate = new LicensePlate("  ABC123  ");
+            var licensePlate = LicensePlate.Create("  ABC123  ");
 
             // Assert
-            await Assert.That(licensePlate.ToJsonValue()).IsEqualTo("ABC123");
+            await Assert.That(licensePlate.ToString()).IsEqualTo("ABC123");
         }
     }
 
@@ -69,7 +69,7 @@ public class LicensePlateTests
 
             // Assert
             await Assert.That(result).IsTrue();
-            await Assert.That(plate.Value).IsEqualTo("ABC123");
+            await Assert.That(plate.ToString()).IsEqualTo("ABC123");
         }
     }
 }

@@ -2,78 +2,55 @@
 #nullable enable
 
 {{~ if namespace ~}}
-namespace {{ namespace }}
+namespace {{ namespace }};
+{{~ end ~}}
+
+[System.Runtime.CompilerServices.CompilerGenerated]
+[System.Text.Json.Serialization.JsonConverter(typeof({{ type_name }}.JsonConverter))]
+public readonly record struct {{ type_name }}
 {
-{{~ end ~}}
-    [System.Runtime.CompilerServices.CompilerGenerated]
-    [System.Text.Json.Serialization.JsonConverter(typeof({{ type_name }}.JsonConverter))]
-    public readonly record struct {{ type_name }}
+    private readonly System.Guid _value;
+    private {{ type_name }}(System.Guid value)
     {
-        private readonly {{ underlying_type }} _value;
-
-        private {{ type_name }}({{ underlying_type }} value)
-        {
-            _value = value;
-        }
-
-{{~ if is_guid ~}}
-        public static {{ type_name }} New() => new {{ type_name }}(System.Guid.NewGuid());
-        public static {{ type_name }} Empty => new {{ type_name }}(System.Guid.Empty);
-
-{{~ end ~}}
-        public static {{ type_name }} From({{ underlying_type }} value) => new {{ type_name }}(value);
-
-        public static implicit operator {{ underlying_type }}({{ type_name }} id) => id._value;
-        public static explicit operator {{ type_name }}({{ underlying_type }} value) => new {{ type_name }}(value);
-
-#if NET6_0_OR_GREATER
-        public static {{ type_name }} Parse(string s) => new {{ type_name }}({{ underlying_type }}.Parse(s));
-        public static bool TryParse(string? s, out {{ type_name }} result)
-        {
-            if ({{ underlying_type }}.TryParse(s, out var value))
-            {
-                result = new {{ type_name }}(value);
-                return true;
-            }
-            result = default;
-            return false;
-        }
-#endif
-
-        [System.Runtime.CompilerServices.CompilerGenerated]
-        internal sealed class JsonConverter : System.Text.Json.Serialization.JsonConverter<{{ type_name }}>
-        {
-            public override {{ type_name }} Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options)
-            {
-{{~ if is_guid ~}}
-                if (reader.TokenType == System.Text.Json.JsonTokenType.String)
-                {
-                    var guidString = reader.GetString();
-                    if (System.Guid.TryParse(guidString, out var guid))
-                    {
-                        return new {{ type_name }}(guid);
-                    }
-                }
-                throw new System.Text.Json.JsonException($"Unable to convert \"{reader.GetString()}\" to {{ type_name }}");
-{{~ end ~}}
-{{~ if is_not_guid ~}}
-                var value = System.Text.Json.JsonSerializer.Deserialize<{{ underlying_type }}>(ref reader, options);
-                return new {{ type_name }}(value);
-{{~ end ~}}
-            }
-
-            public override void Write(System.Text.Json.Utf8JsonWriter writer, {{ type_name }} value, System.Text.Json.JsonSerializerOptions options)
-            {
-{{~ if is_guid ~}}
-                writer.WriteStringValue((({{ underlying_type }})value).ToString());
-{{~ end ~}}
-{{~ if is_not_guid ~}}
-                System.Text.Json.JsonSerializer.Serialize(writer, ({{ underlying_type }})value, options);
-{{~ end ~}}
-            }
-        }
+        _value = value;
     }
 
-{{~ if namespace ~}}
+    public static {{ type_name }} New() => new {{ type_name }}(System.Guid.CreateVersion7());
+    public static {{ type_name }} Empty => new {{ type_name }}(System.Guid.Empty);
+    public static {{ type_name }} From(System.Guid value) => new {{ type_name }}(value);
+    public static implicit operator System.Guid({{ type_name }} id) => id._value;
+    public static explicit operator {{ type_name }}(System.Guid value) => new {{ type_name }}(value);
+    public static {{ type_name }} Parse(string s) => new {{ type_name }}(System.Guid.Parse(s));
+    public static bool TryParse(string? s, out {{ type_name }} result)
+    {
+        if (System.Guid.TryParse(s, out var value))
+        {
+            result = new {{ type_name }}(value);
+            return true;
+        }
+        result = default;
+        return false;
+    }
+
+    [System.Runtime.CompilerServices.CompilerGenerated]
+    internal sealed class JsonConverter : System.Text.Json.Serialization.JsonConverter<{{ type_name }}>
+    {
+        public override {{ type_name }} Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options)
+        {
+            if (reader.TokenType == System.Text.Json.JsonTokenType.String)
+            {
+                var guidString = reader.GetString();
+                if (System.Guid.TryParse(guidString, out var guid))
+                {
+                    return new {{ type_name }}(guid);
+                }
+            }
+            throw new System.Text.Json.JsonException($"Unable to convert \"{reader.GetString()}\" to {{ type_name }}");
+        }
+
+        public override void Write(System.Text.Json.Utf8JsonWriter writer, {{ type_name }} value, System.Text.Json.JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(((System.Guid)value).ToString());
+        }
+    }
 }
-{{~ end ~}}

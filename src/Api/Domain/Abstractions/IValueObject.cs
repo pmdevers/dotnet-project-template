@@ -8,7 +8,6 @@ namespace Template.Api.Domain.Abstractions;
 public interface IValueObject<TSelf>
     where TSelf : IValueObject<TSelf>
 {
-    string ToJsonValue();
     static abstract bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? formatProvider, [MaybeNullWhen(false)] out TSelf result);
 }
 
@@ -53,5 +52,5 @@ public class ValueObjectConverter<T> : JsonConverter<T>
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
-        => writer.WriteStringValue(value.ToJsonValue());
+        => writer.WriteStringValue(value.ToString());
 }

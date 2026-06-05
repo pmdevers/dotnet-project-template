@@ -12,7 +12,7 @@ public class ValueObjectIdGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var ns = typeof(ValueObjectIdGenerator).Namespace.Split('.')[0];
+        var ns = string.Empty;
         // Register attribute source
         context.RegisterPostInitializationOutput(ctx =>
         {
@@ -78,32 +78,14 @@ public class ValueObjectIdGenerator : IIncrementalGenerator
         if (typeSymbol is null)
             return null;
 
-        var underlyingType = GetUnderlyingType(attribute, semanticModel);
         var namespaceName = typeSymbol.ContainingNamespace.IsGlobalNamespace
             ? null
             : typeSymbol.ContainingNamespace.ToDisplayString();
 
         return new TypeDeclarationInfo(
             typeSymbol.Name,
-            namespaceName,
-            underlyingType
+            namespaceName
         );
-    }
-
-    private static string GetUnderlyingType(AttributeSyntax attribute, SemanticModel semanticModel)
-    {
-        // Check for typeof argument
-        if (attribute.ArgumentList?.Arguments.Count > 0)
-        {
-            var firstArg = attribute.ArgumentList.Arguments[0];
-            if (firstArg.Expression is TypeOfExpressionSyntax typeOf)
-            {
-                var typeInfo = semanticModel.GetTypeInfo(typeOf.Type);
-                return typeInfo.Type?.ToDisplayString() ?? "System.Guid";
-            }
-        }
-
-        return "System.Guid"; // Default
     }
 
     private static void Execute(TypeDeclarationInfo typeInfo, SourceProductionContext context)
@@ -119,23 +101,18 @@ public class ValueObjectIdGenerator : IIncrementalGenerator
     {
         var template = TemplateHelper.LoadTemplate("ValueObjectId.cs");
 
-        var isGuid = info.UnderlyingType == "System.Guid";
         var parameters = new Dictionary<string, object>
         {
             { "namespace", info.Namespace ?? string.Empty },
             { "type_name", $"{info.TypeName}Id" },
-            { "underlying_type", info.UnderlyingType },
-            { "is_guid", isGuid },
-            { "is_not_guid", !isGuid }
         };
 
         return TemplateHelper.RenderTemplate(template, parameters);
     }
 
-    private sealed class TypeDeclarationInfo(string typeName, string @namespace, string underlyingType)
+    private sealed class TypeDeclarationInfo(string typeName, string @namespace)
     {
         public string TypeName { get; } = typeName;
         public string Namespace { get; } = @namespace;
-        public string UnderlyingType { get; } = underlyingType;
     }
 }

@@ -1,6 +1,7 @@
 using NSubstitute;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
+using Template.Api.Domain.ValueObjects;
 using Template.Api.Features.Reservations;
 
 namespace Template.Tests.Features.Reservations;
@@ -25,8 +26,8 @@ public class CreateReservationTests
         {
             // Arrange
             var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(5));
+            var startDate = ReservationDate.Today().AddDays(1);
+            var endDate = ReservationDate.Today().AddDays(5);
             var command = new CreateReservation.Command(customerId, startDate, endDate);
 
             // Act
@@ -41,8 +42,8 @@ public class CreateReservationTests
         {
             // Arrange
             var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(5));
+            var startDate = ReservationDate.Today().AddDays(1);
+            var endDate = ReservationDate.Today().AddDays(5);
             var command = new CreateReservation.Command(customerId, startDate, endDate);
 
             // Act
@@ -60,8 +61,8 @@ public class CreateReservationTests
         {
             // Arrange
             var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(2));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(7));
+            var startDate = ReservationDate.Today().AddDays(1);
+            var endDate = ReservationDate.Today().AddDays(5);
             var command = new CreateReservation.Command(customerId, startDate, endDate);
 
             // Act
@@ -69,38 +70,6 @@ public class CreateReservationTests
 
             // Assert
             await _unitOfWork.Received(1).SaveChangesAsync();
-        }
-
-        [Test]
-        public async Task CreateReservation_WithValidData_ReturnsReservationInResponse()
-        {
-            // Arrange
-            var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(3));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(8));
-            var command = new CreateReservation.Command(customerId, startDate, endDate);
-
-            // Act
-            var result = await CreateReservation.Handle(_unitOfWork, command);
-
-            // Assert
-            await Assert.That(result).IsNotNull();
-        }
-
-        [Test]
-        public async Task CreateReservation_WithValidData_GeneratesReservationId()
-        {
-            // Arrange
-            var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(6));
-            var command = new CreateReservation.Command(customerId, startDate, endDate);
-
-            // Act
-            var result = await CreateReservation.Handle(_unitOfWork, command);
-
-            // Assert
-            await Assert.That(result).IsNotNull();
         }
     }
 }

@@ -9,7 +9,7 @@ public class CarTests
     public async Task RegisterCar_CreatesCarWithValidLicensePlate()
     {
         // Arrange
-        var licensePlate = new LicensePlate("ABC123");
+        var licensePlate = LicensePlate.Create("ABC123");
 
         // Act
         var car = Car.Create(licensePlate);
@@ -17,15 +17,15 @@ public class CarTests
         // Assert
         await Assert.That(car.Id).IsNotEqualTo(CarId.Empty);
         await Assert.That(car.LicensePlate).IsEqualTo(licensePlate);
-        await Assert.That(car.LicensePlate.ToJsonValue()).IsEqualTo("ABC123");
+        await Assert.That(car.LicensePlate.ToString()).IsEqualTo("ABC123");
     }
 
     [Test]
     public async Task RegisterCar_GeneratesUniqueIds()
     {
         // Arrange
-        var licensePlate1 = new LicensePlate("ABC123");
-        var licensePlate2 = new LicensePlate("XYZ789");
+        var licensePlate1 = LicensePlate.Create("ABC123");
+        var licensePlate2 = LicensePlate.Create("XYZ789");
 
         // Act
         var car1 = Car.Create(licensePlate1);
@@ -39,20 +39,20 @@ public class CarTests
     public async Task RegisterCar_NormalizesLicensePlate()
     {
         // Arrange
-        var licensePlate = new LicensePlate("abc123");
+        var licensePlate = LicensePlate.Create("abc123");
 
         // Act
         var car = Car.Create(licensePlate);
 
         // Assert
-        await Assert.That(car.LicensePlate.ToJsonValue()).IsEqualTo("ABC123");
+        await Assert.That(car.LicensePlate.ToString()).IsEqualTo("ABC123");
     }
 
     [Test]
     public async Task RegisterCar_RecordsCreatedEvent()
     {
         // Arrange
-        var licensePlate = new LicensePlate("ABC123");
+        var licensePlate = LicensePlate.Create("ABC123");
 
         // Act
         var car = Car.Create(licensePlate);

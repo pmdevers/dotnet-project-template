@@ -4,7 +4,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 var registery = builder.AddContainerRegistry("ghcr", "ghcr.io", "pmdevers");
 #pragma warning restore ASPIRECOMPUTE003 // AddContainerRegistry is an experimental API and may change in future releases.
 
-var imageTag = Environment.GetEnvironmentVariable("IMAGE_TAG") ?? "latest";
+var imageTag = Environment.GetEnvironmentVariable("IMAGE_TAG") ?? "1.0.0";
 
 builder.AddKubernetesEnvironment("homelab")
     .WithHelm(helm =>

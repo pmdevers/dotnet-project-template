@@ -1,6 +1,8 @@
 using Template.Api.Domain.Abstractions;
+using Template.Api.Domain.ValueObjects;
 
 namespace Template.Api.Domain.Entities;
+
 
 [GenerateId]
 public class Reservation : AggregateRoot
@@ -8,12 +10,13 @@ public class Reservation : AggregateRoot
     public ReservationId Id { get; private set; }
     public CustomerId CustomerId { get; private set; }
     public CarId CarId { get; private set; }
-    public DateOnly StartDate { get; private set; }
-    public DateOnly EndDate { get; private set; }
+
+    public ReservationDate StartDate { get; private set; }
+    public ReservationDate EndDate { get; private set; }
 
     public ReservationStatus Status { get; private set; } = ReservationStatus.InProgress;
 
-    public static Reservation Create(CustomerId customerId, DateOnly startDate, DateOnly endDate)
+    public static Reservation Create(CustomerId customerId, ReservationDate startDate, ReservationDate endDate)
     {
         var reservation = new Reservation();
         reservation.RecordEvent(new ReservationCreatedEvent(ReservationId.New(), customerId, startDate, endDate));
@@ -51,5 +54,5 @@ public enum ReservationStatus
     Cancelled
 }
 
-public record ReservationCreatedEvent(ReservationId ReservationId, CustomerId CustomerId, DateOnly StartDate, DateOnly EndDate) : DomainEvent;
+public record ReservationCreatedEvent(ReservationId ReservationId, CustomerId CustomerId, ReservationDate StartDate, ReservationDate EndDate) : DomainEvent;
 public record ReservationCarAttachedEvent(ReservationId ReservationId, CarId CarId) : DomainEvent;

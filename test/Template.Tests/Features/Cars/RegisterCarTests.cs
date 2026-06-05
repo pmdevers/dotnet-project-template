@@ -26,7 +26,7 @@ public class RegisterCarTests
         public async Task RegisterCar_WithValidLicensePlate_ReturnsCreatedResult()
         {
             // Arrange
-            var licensePlate = new LicensePlate("ABC123");
+            var licensePlate = LicensePlate.Create("ABC123");
             var command = new Register.Command(licensePlate);
 
             // Act
@@ -40,7 +40,7 @@ public class RegisterCarTests
         public async Task RegisterCar_WithValidLicensePlate_AddsCarToRepository()
         {
             // Arrange
-            var licensePlate = new LicensePlate("XYZ789");
+            var licensePlate = LicensePlate.Create("XYZ789");
             var command = new Register.Command(licensePlate);
 
             // Act
@@ -54,7 +54,7 @@ public class RegisterCarTests
         public async Task RegisterCar_WithValidLicensePlate_SavesChanges()
         {
             // Arrange
-            var licensePlate = new LicensePlate("LMN456");
+            var licensePlate = LicensePlate.Create("LMN456");
             var command = new Register.Command(licensePlate);
 
             // Act
@@ -68,7 +68,7 @@ public class RegisterCarTests
         public async Task RegisterCar_WithValidLicensePlate_ReturnsCarInResponse()
         {
             // Arrange
-            var licensePlate = new LicensePlate("DEF123");
+            var licensePlate = LicensePlate.Create("DEF123");
             var command = new Register.Command(licensePlate);
 
             // Act
@@ -82,7 +82,7 @@ public class RegisterCarTests
         public async Task RegisterCar_WithValidLicensePlate_GeneratesCarId()
         {
             // Arrange
-            var licensePlate = new LicensePlate("GHI789");
+            var licensePlate = LicensePlate.Create("GHI789");
             var command = new Register.Command(licensePlate);
 
             // Act

@@ -22,8 +22,8 @@ public class CarConfiguration : IEntityTypeConfiguration<Car>
 
         builder.Property(x => x.LicensePlate)
             .HasConversion(
-                v => v.ToJsonValue(),
-                v => new LicensePlate(v))
+                v => v.Value,
+                v => LicensePlate.Create(v))
             .IsRequired();
     }
 }

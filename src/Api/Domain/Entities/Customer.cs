@@ -1,4 +1,5 @@
 using Template.Api.Domain.Abstractions;
+using Template.Api.Domain.ValueObjects;
 
 namespace Template.Api.Domain.Entities;
 
@@ -6,9 +7,9 @@ namespace Template.Api.Domain.Entities;
 public class Customer : AggregateRoot
 {
     public CustomerId Id { get; private set; }
-    public string Name { get; private init; } = string.Empty;
+    public NonEmptyString Name { get; private set; }
 
-    public static Customer Create(string name)
+    public static Customer Create(NonEmptyString name)
     {
         var customer = new Customer()
         {

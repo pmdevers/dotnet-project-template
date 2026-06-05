@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
+using Template.Api.Domain.ValueObjects;
 using Template.Api.Features.Reservations;
 
 namespace Template.Tests.Features.Reservations;
@@ -27,8 +28,8 @@ public class GetReservationByIdTests
             // Arrange
             var reservationId = ReservationId.New();
             var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(5));
+            var startDate = ReservationDate.Today().AddDays(1);
+            var endDate = ReservationDate.Today().AddDays(5);
             var reservation = Reservation.Create(customerId, startDate, endDate);
 
             _reservationRepository.TryFindAsync(reservationId).Returns(reservation);
@@ -46,8 +47,8 @@ public class GetReservationByIdTests
             // Arrange
             var reservationId = ReservationId.New();
             var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(2));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(6));
+            var startDate = ReservationDate.Today().AddDays(2);
+            var endDate = ReservationDate.Today().AddDays(6);
             var reservation = Reservation.Create(customerId, startDate, endDate);
 
             _reservationRepository.TryFindAsync(reservationId).Returns(reservation);
@@ -79,8 +80,8 @@ public class GetReservationByIdTests
             // Arrange
             var reservationId = ReservationId.New();
             var customerId = CustomerId.New();
-            var startDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-            var endDate = DateOnly.FromDateTime(DateTime.Now.AddDays(5));
+            var startDate = ReservationDate.Today().AddDays(2);
+            var endDate = ReservationDate.Today().AddDays(6);
             var reservation = Reservation.Create(customerId, startDate, endDate);
 
             _reservationRepository.TryFindAsync(reservationId).Returns(reservation);

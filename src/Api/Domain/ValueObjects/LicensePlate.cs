@@ -1,14 +1,17 @@
+using Newtonsoft.Json.Linq;
 using System.Diagnostics.CodeAnalysis;
 using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.ValueObjects;
 
-public readonly record struct LicensePlate(string Value) : IValueObject<LicensePlate>
+public record LicensePlate(string Value) : IValueObject<LicensePlate>
 {
-    public string Value { get; init; } =
-        string.IsNullOrWhiteSpace(Value)
-            ? throw new FormatException("LicensePlate cannot be empty.")
-            : Value.Trim().ToUpper();
+    public string Value { get; init; }
+        = string.IsNullOrWhiteSpace(Value) 
+        ? throw new ArgumentException("LicensePlate cannot be empty.") 
+        : Value.Trim().ToUpper();
+
+    public static LicensePlate Create(string value) => new(value);
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? formatProvider, [MaybeNullWhen(false)] out LicensePlate result)
     {
@@ -18,19 +21,13 @@ public readonly record struct LicensePlate(string Value) : IValueObject<LicenseP
             return false;
         }
 
-        result = new LicensePlate(s);
+        result = Create(s);
         return true;
     }
 
-    public string ToJsonValue()
-    {
-        return Value;
-    }
+    public override string ToString()
+        => Value;
 
-    // Implicit operators
-    public static implicit operator string(LicensePlate licensePlate)
-        => licensePlate.Value;
-
-    public static explicit operator LicensePlate(string value)
-        => new(value);
+    public static implicit operator string(LicensePlate licensePlate) => licensePlate.Value;
+    public static explicit operator LicensePlate(string value) => Create(value);
 }

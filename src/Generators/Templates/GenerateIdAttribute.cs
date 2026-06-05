@@ -9,7 +9,6 @@ namespace {{ namespace }}
     public sealed class GenerateIdAttribute : System.Attribute
     {
         public GenerateIdAttribute() { }
-        public GenerateIdAttribute(System.Type underlyingType) { }
     }
 {{~ if namespace ~}}
 }

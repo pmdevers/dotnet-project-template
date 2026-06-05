@@ -42,8 +42,8 @@ public class AppDbContextDataSeeder(AppDbContext dbContext, IOptions<DatabaseOpt
         var carRepo = dbContext.GetRepository<Car, CarId>();
         var reservationRepo = dbContext.GetRepository<Reservation, ReservationId>();
 
-        var car = Car.Create(new LicensePlate("GPP-30-T"));
-        var reservation = Reservation.Create(CustomerId.New(), DateOnly.Parse("2024-07-01", CultureInfo.CurrentCulture), DateOnly.Parse("2024-07-10", CultureInfo.CurrentCulture));
+        var car = Car.Create(LicensePlate.Create("GPP-30-T"));
+        var reservation = Reservation.Create(CustomerId.New(),  ReservationDate.Today(), ReservationDate.Today().AddDays(10));
 
         carRepo.Add(car);
         reservationRepo.Add(reservation);
