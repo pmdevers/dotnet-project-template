@@ -10,21 +10,21 @@ public class LicensePlateTests
         public async Task ThrowsOnNull()
         {
             // Act & Assert
-            await Assert.That(() => LicensePlate.Create(null!)).Throws<FormatException>();
+            await Assert.That(() => LicensePlate.Create(null!)).Throws<ArgumentException>();
         }
 
         [Test]
         public async Task ThrowsOnEmpty()
         {
             // Act & Assert
-            await Assert.That(() => LicensePlate.Create("")).Throws<FormatException>();
+            await Assert.That(() => LicensePlate.Create("")).Throws<ArgumentException>();
         }
 
         [Test]
         public async Task ThrowsOnWhitespace()
         {
             // Act & Assert
-            await Assert.That(() => LicensePlate.Create("   ")).Throws<FormatException>();
+            await Assert.That(() => LicensePlate.Create("   ")).Throws<ArgumentException>();
         }
 
         [Test]

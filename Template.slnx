@@ -1,9 +1,9 @@
 <Solution>
-  <Project Path=".net.csproj" />
+  <Project Path="src/.net.csproj" />
   <Folder Name="/src/">
     <Project Path="src/Api/Template.Api.csproj" />
     <Project Path="src/AppHost/Template.AppHost.csproj" />
-    <Project Path="src/Generators/Template.Generators.csproj"  />
+    <Project Path="src/Generators/Template.Generators.csproj" />
     <Project Path="src/ServiceDefaults/Template.ServiceDefaults.csproj" />
     <Project Path="src/WebUi/Template.WebUi.csproj" />
   </Folder>

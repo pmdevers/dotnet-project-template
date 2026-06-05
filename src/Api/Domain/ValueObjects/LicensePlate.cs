@@ -1,10 +1,9 @@
-using Newtonsoft.Json.Linq;
 using System.Diagnostics.CodeAnalysis;
 using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.ValueObjects;
 
-public record LicensePlate(string Value) : IValueObject<LicensePlate>
+public readonly record struct LicensePlate(string Value) : IValueObject<LicensePlate>
 {
     public string Value { get; init; }
         = string.IsNullOrWhiteSpace(Value) 

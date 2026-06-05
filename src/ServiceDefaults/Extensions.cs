@@ -77,6 +77,7 @@ public static class Extensions
         return builder;
     }
 
+#pragma warning disable S3241 // Methods should not return values that are never used
     private static TBuilder AddOpenTelemetryExporters<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
         var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
@@ -88,7 +89,7 @@ public static class Extensions
 
         return builder;
     }
-
+#pragma warning restore S3241 // Methods should not return values that are never used
     public static TBuilder AddDefaultHealthChecks<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
         builder.Services.AddHealthChecks()

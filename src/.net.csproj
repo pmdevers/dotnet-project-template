@@ -11,15 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup Label="Include your files as content">
-    <Content Include="**/*.*" />
+    <Content Include="../**/*.*" />
   </ItemGroup>
   
   <ItemGroup Label="Exclude build output and source files">
-    <Content Remove="artifacts\**" />
-    <Content Remove="bin\**" />
-    <Content Remove="obj\**" />
-    <Content Remove="src\**" />
-    <Content Remove="test\**" />
+    <Content Remove="../artifacts/**" />
+    <Content Remove="../bin/**" />
+    <Content Remove="../obj/**" />
+    <Content Remove="../src/**" />
+    <Content Remove="../test/**" />
   </ItemGroup>
   
 </Project>

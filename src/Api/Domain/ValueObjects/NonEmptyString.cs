@@ -3,7 +3,7 @@ using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.ValueObjects;
 
-public record NonEmptyString(string Value) : IValueObject<NonEmptyString>
+public readonly record struct NonEmptyString(string Value) : IValueObject<NonEmptyString>
 {
     public string Value { get; init; }
         = string.IsNullOrWhiteSpace(Value) 

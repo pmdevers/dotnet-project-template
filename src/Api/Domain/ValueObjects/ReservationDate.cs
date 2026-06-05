@@ -3,7 +3,7 @@ using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.ValueObjects;
 
-public record ReservationDate(DateOnly Date, TimeProvider? timeProvider = null) : IValueObject<ReservationDate>
+public readonly record struct ReservationDate(DateOnly Date, TimeProvider? timeProvider = null) : IValueObject<ReservationDate>
 {
     public DateOnly Value { get; init; } 
         = Date < DateOnly.FromDateTime((timeProvider ?? TimeProvider.System).GetUtcNow().Date) 

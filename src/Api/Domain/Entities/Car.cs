@@ -7,7 +7,7 @@ namespace Template.Api.Domain.Entities;
 public class Car : AggregateRoot
 {
     public CarId Id { get; private set; }
-    public LicensePlate LicensePlate { get; private set; } = default!;
+    public LicensePlate LicensePlate { get; private set; }
 
     public static Car Create(LicensePlate licensePlate)
     {

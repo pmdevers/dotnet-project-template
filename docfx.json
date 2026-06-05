@@ -5,13 +5,11 @@
           "files": ["docs/api/**.yml"]
         },
         {
-          "files": ["docs/**.md", "docs/**/toc.yml", "toc.yml", "*.md"]
+          "files": ["docs/**.md", "docs/**/toc.yml", "toc.yml", "index.md"]
         },
         {
-          "files": ["src/**/*.md"]
-        },
-        {
-          "files": ["install/**.md", "LICENSE"]
+          "files": ["src/**/*.md"],
+          "exclude": ["src/WebUi/node_modules/**"]
         }
       ],
       "resource": [
