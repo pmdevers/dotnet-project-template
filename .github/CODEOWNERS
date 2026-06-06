@@ -1,0 +1,22 @@
+# Default owner for entire repository
+* @pmdevers
+
+# Workflows and release automation
+/.github/workflows/ @pmdevers
+
+# Backend and shared .NET components
+/src/Api/ @pmdevers
+/src/AppHost/ @pmdevers
+/src/ServiceDefaults/ @pmdevers
+/src/Generators/ @pmdevers
+
+# Frontend
+/src/WebUi/ @pmdevers
+
+# Tests
+/test/ @pmdevers
+
+# Documentation
+/docs/ @pmdevers
+/docfx.json @pmdevers
+/toc.yml @pmdevers
