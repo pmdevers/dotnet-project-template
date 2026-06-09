@@ -1,17 +1,18 @@
 using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json.Serialization;
 using Template.Api.Domain.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Template.Api.Configuration;
 
 public static class OptionConfigs
 {
-    extension(IServiceCollection services)
+    extension(WebApplicationBuilder builder)
     {
-        public IServiceCollection AddOptionConfigs(IConfiguration configuration,
-                                                      ILogger logger,
-                                                      WebApplicationBuilder builder)
+        public WebApplicationBuilder AddOptionConfigs(ILogger logger)
         {
+            var services = builder.Services;
+            var configuration = builder.Configuration;
             services
             .Configure<DatabaseOptions>(configuration.GetSection("DatabaseOptions"))
 
@@ -27,9 +28,12 @@ public static class OptionConfigs
                 options.SerializerOptions.Converters.Add(new ValueObjectJsonConverter());
             });
 
-            logger.LogInformation("{Project} were configured", "Options");
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("{Project} were configured", "Options");
+            }
 
-            return services;
+            return builder;
         }
     }
 

@@ -4,9 +4,9 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Aspire.Hosting.Kubernetes" Version="13.3.5-preview.1.26270.6" />
-    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="13.4.2" />
-    <PackageVersion Include="Aspire.Hosting.Redis" Version="13.4.2" />
+    <PackageVersion Include="Aspire.Hosting.Kubernetes" Version="13.4.3-preview.1.26305.13" />
+    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="13.4.3" />
+    <PackageVersion Include="Aspire.Hosting.Redis" Version="13.4.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.10" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
@@ -32,13 +32,13 @@
     <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
     <PackageVersion Include="Serilog.Settings.Configuration" Version="10.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
-    <PackageVersion Include="TUnit" Version="1.49.0" />
+    <PackageVersion Include="TUnit" Version="1.53.0" />
   </ItemGroup>
   <ItemGroup>
     <!--Disabled for now because of bin and obj bug-->
     <!--<GlobalPackageReference Include="DotNetProjectFile.Analyzers" Version="1.14.1" />-->
     <GlobalPackageReference Include="MessagePackAnalyzer" Version="3.1.6" />
-    <GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.27.0.140913"  />
+    <GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.27.0.140913" />
     <GlobalPackageReference Include="SerilogAnalyzer" Version="0.15.0" />
   </ItemGroup>
 </Project>

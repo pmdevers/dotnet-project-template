@@ -1,5 +1,4 @@
 using Scalar.AspNetCore;
-using Template.Api.Domain.Abstractions;
 using Template.Api.Features;
 using Template.WebUi;
 
@@ -10,7 +9,7 @@ public static class MiddlewareConfig
 {
     extension(WebApplication app)
     {
-        public async Task<WebApplication> UseAppMiddleware()
+        public WebApplication UseAppMiddleware()
         {
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -38,16 +37,7 @@ public static class MiddlewareConfig
                 await context.Response.SendFileAsync(file);
             });
 
-            await app.SeedDatabase();
-
             return app;
-        }
-
-        private async Task SeedDatabase()
-        {
-            using var scope = app.Services.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<IDataSeeder>();
-            await seeder.SeedAsync(app.Environment.IsDevelopment());
         }
     }
 }

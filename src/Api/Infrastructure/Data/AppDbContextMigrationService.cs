@@ -1,22 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Globalization;
 using Template.Api.Configuration;
-using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
 using Template.Api.Domain.ValueObjects;
 
 namespace Template.Api.Infrastructure.Data;
 
-public class AppDbContextDataSeeder(AppDbContext dbContext, IOptions<DatabaseOptions> options, ILogger<AppDbContextDataSeeder> logger) : IDataSeeder
+public class AppDbContextMigrationService(IServiceScopeFactory scopeFactory, ILogger<AppDbContextMigrationService> logger)
+    : IHostedService
 {
-    public DatabaseOptions? Options { get; } = options?.Value;
-
-    public async Task SeedAsync(bool recreate, CancellationToken cancellationToken = default)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         try
         {
-            if (recreate && Options?.RecreateOnStartup == true)
+            var scope = scopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var options = scope.ServiceProvider.GetService<IOptions<DatabaseOptions>>();
+
+            if (options?.Value.RecreateOnStartup == true)
             {
                 logger.LogWarning("DROPPING database for fresh start (DatabaseOptions:RecreateOnStartup = true)...");
                 await dbContext.Database.EnsureDeletedAsync(cancellationToken);
@@ -27,7 +28,11 @@ public class AppDbContextDataSeeder(AppDbContext dbContext, IOptions<DatabaseOpt
             await dbContext.Database.MigrateAsync(cancellationToken);
             logger.LogInformation("Database migrations applied successfully.");
 
-            await SeedInitialDataAsync(cancellationToken);
+            if (options?.Value.RecreateOnStartup == true)
+            {
+                await SeedInitialDataAsync(dbContext, cancellationToken);
+            }
+
         }
         catch (Exception ex)
         {
@@ -35,15 +40,20 @@ public class AppDbContextDataSeeder(AppDbContext dbContext, IOptions<DatabaseOpt
         }
     }
 
-    private async Task SeedInitialDataAsync(CancellationToken cancellationToken)
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+    private static async Task SeedInitialDataAsync(AppDbContext dbContext, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         var carRepo = dbContext.GetRepository<Car, CarId>();
         var reservationRepo = dbContext.GetRepository<Reservation, ReservationId>();
 
-        var car = Car.Create(LicensePlate.Create("GPP-30-T"));
-        var reservation = Reservation.Create(CustomerId.New(),  ReservationDate.Today(), ReservationDate.Today().AddDays(10));
+        var car = await carRepo.TryFindAsync(CarId.Parse("GPP-30-T"), cancellationToken) 
+            ?? Car.Create(LicensePlate.Create("GPP-30-T"));
+
+        var reservation = await reservationRepo.TryFindAsync(ReservationId.Parse("GPP-30-T"), cancellationToken) 
+            ?? Reservation.Create(CustomerId.New(),  ReservationDate.Today(), ReservationDate.Today().AddDays(10));
 
         carRepo.Add(car);
         reservationRepo.Add(reservation);

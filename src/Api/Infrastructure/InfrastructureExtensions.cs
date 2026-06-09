@@ -5,29 +5,26 @@ namespace Template.Api.Infrastructure;
 
 public static class InfrastructureExtensions
 {
-    extension(IServiceCollection services)
+    extension(WebApplicationBuilder builder)
     {
-        public IServiceCollection AddInfrastructure(IConfiguration configuration, ILogger logger)
+        public WebApplicationBuilder AddInfrastructure(ILogger logger)
         {
+            var configuration = builder.Configuration;
+            var services = builder.Services;
+
             var connectionString = configuration.GetConnectionString("appdb")
                 ?? throw new InvalidOperationException("DefaultConnection is not set in the configuration.");
 
             services.AddAppDbContext(connectionString);
-            services.AddEventBus();
-            return services;
-        }
 
-        public IServiceCollection AddWhenNotRegisterd<T>(Action<IServiceCollection> register)
-        {
-            if (services.Any(x => x.ServiceType == typeof(T)))
+            services.AddEventBus();
+
+            if (logger.IsEnabled(LogLevel.Information))
             {
-                return services;
+                logger.LogInformation("Infrastructure Services Registered.");
             }
 
-            register(services);
-            return services;
+            return builder;
         }
     }
-
-
 }

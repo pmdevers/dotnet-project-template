@@ -21,7 +21,8 @@ public static class AppDbContextExtensions
 
 
             services.AddScoped<IUnitOfWork>(x => x.GetRequiredService<AppDbContext>());
-            services.AddScoped<IDataSeeder, AppDbContextDataSeeder>();
+
+            services.AddHostedService<AppDbContextMigrationService>();
 
             services.AddScoped<ICarQueries, CarQueries>();
 

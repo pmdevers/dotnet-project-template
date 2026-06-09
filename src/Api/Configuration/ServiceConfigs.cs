@@ -2,16 +2,21 @@ namespace Template.Api.Configuration;
 
 public static class ServiceConfigs
 {
-    extension(IServiceCollection services)
+    extension(WebApplicationBuilder builder)
     {
 
-        public IServiceCollection AddServiceConfigs(ILogger logger, WebApplicationBuilder builder)
+        public WebApplicationBuilder AddServiceConfigs(ILogger logger)
         {
+            var services = builder.Services;
+
             services.AddOpenApi();
 
-            logger.LogInformation("{Project} services registered", "Services");
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("{Project} services registered", "Services");
+            }
 
-            return services;
+            return builder;
         }
     }
 }

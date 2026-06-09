@@ -2,7 +2,7 @@
 
 A modern, scalable .NET template featuring **Domain-Driven Design (DDD)**, **Event Sourcing**, **CQRS patterns**, and **.NET Aspire** orchestration.
 
-## 🎯 Features
+## Features
 
 - **Domain-Driven Design (DDD)**: Well-structured domain models with aggregates and value objects
 - **Event Sourcing**: Full audit trail with event-based aggregate persistence
@@ -15,7 +15,7 @@ A modern, scalable .NET template featuring **Domain-Driven Design (DDD)**, **Eve
 - **Vue.js**: Modern frontend with Vite
 - **.NET 10**: Latest C# features and performance improvements
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -50,22 +50,7 @@ This starts:
 - **API Docs**: http://localhost:5000/scalar
 - **Frontend**: http://localhost:5173
 
-## 📁 Project Structure
-
-```
-src/
-├── AppHost/              # .NET Aspire orchestration
-├── Api/                  # ASP.NET Core API
-│   ├── Domain/          # Business logic (entities, aggregates, value objects)
-│   ├── Infrastructure/  # Data access, events, repositories
-│   ├── Features/        # API endpoints and command handlers
-│   └── Configuration/   # Service and middleware setup
-├── WebUi/               # Vue.js frontend
-├── ServiceDefaults/     # Shared configuration
-└── Generators/          # Source generators
-```
-
-## 🏗️ Architecture
+## Architecture
 
 ### Domain Layer
 
@@ -85,7 +70,7 @@ src/
 - **Cars**: Register and query vehicles
 - **Reservations**: Create and retrieve reservations (event-sourced)
 
-## 🗄️ Database
+## Database
 
 ### Migrations
 
@@ -112,7 +97,7 @@ Manual setup:
 }
 ```
 
-## 📝 Key Patterns
+## Key Patterns
 
 ### Event Sourcing Example
 
@@ -148,7 +133,7 @@ services.AddEventBus();
 await unitOfWork.SaveChangesAsync(); // Triggers event dispatch
 ```
 
-## 🛠️ Common Tasks
+## Common Tasks
 
 ### Add a New Aggregate
 
@@ -173,7 +158,7 @@ bus.Subscribe<CarRegistered>(async @event =>
 });
 ```
 
-## 📦 NuGet Packages
+## NuGet Packages
 
 Core dependencies:
 - `Microsoft.EntityFrameworkCore` (10.0.0)
@@ -181,7 +166,7 @@ Core dependencies:
 - `Microsoft.AspNetCore.OpenApi`
 - `Serilog` & related sinks
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -191,13 +176,13 @@ dotnet test
 dotnet test src/Api/Template.Api.csproj
 ```
 
-## 📖 API Documentation
+## API Documentation
 
 After running the app, visit:
 - **Scalar UI**: http://localhost:5000/scalar
 - **OpenAPI JSON**: http://localhost:5000/openapi/v1.json
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Database connection fails
 - Ensure PostgreSQL is running (via Aspire or Docker)
@@ -211,7 +196,7 @@ After running the app, visit:
 - Update .NET: `dotnet --version` should be 10.0.0+
 - Reinstall: `dotnet tool update -g dotnet-aspire-latest`
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please:
 1. Fork the repository
@@ -219,11 +204,11 @@ Contributions welcome! Please:
 3. Commit changes
 4. Push and open a pull request
 
-## 📄 License
+## License
 
 This project is open source and available under the MIT License.
 
-## 📚 Resources
+## Resources
 
 - [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
 - [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html)
