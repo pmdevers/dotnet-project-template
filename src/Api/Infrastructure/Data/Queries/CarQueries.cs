@@ -9,6 +9,6 @@ public class CarQueries(AppDbContext db) : ICarQueries
     public async Task<ICarQueries.CarDto?> GetByLicensePlateAsync(LicensePlate licensePlate, CancellationToken ct = default)
         => await db.Cars
             .Where(x => x.LicensePlate == licensePlate)
-            .Select(x => new ICarQueries.CarDto(x.Id, x.LicensePlate))
+            .Select(x => new ICarQueries.CarDto(x.LicensePlate))
             .FirstOrDefaultAsync(ct);
 }

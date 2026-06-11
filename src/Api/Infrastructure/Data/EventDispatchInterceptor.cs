@@ -21,8 +21,16 @@ public class EventDispatchInterceptor(IEventBus eventbus) : SaveChangesIntercept
           .SelectMany(e => e.Entity.GetUncommittedEvents())
           .ToArray();
 
+        var events2 = appDbContext.EventSourced.Values
+            .SelectMany(e => e.GetUncommittedEvents())
+            .ToArray();
+
+        var allEvents = events.Concat(events2).ToArray();
+
         // Dispatch and clear domain events
-        await eventbus.PublishAsync(events, cancellationToken);
+        await eventbus.PublishAsync(allEvents, cancellationToken);
+
+        appDbContext.EventSourced.Clear();
 
         return await base.SavedChangesAsync(eventData, result, cancellationToken);
 

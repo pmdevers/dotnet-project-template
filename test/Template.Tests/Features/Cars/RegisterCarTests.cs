@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
@@ -12,14 +11,14 @@ public class RegisterCarTests
     public class HandleTests
     {
         private IUnitOfWork _unitOfWork = null!;
-        private IRepository<Car, CarId> _carRepository = null!;
+        private IRepository<Car, LicensePlate> _carRepository = null!;
 
         [Before(HookType.Test)]
         public void Setup()
         {
             _unitOfWork = Substitute.For<IUnitOfWork>();
-            _carRepository = Substitute.For<IRepository<Car, CarId>>();
-            _unitOfWork.GetRepository<Car, CarId>().Returns(_carRepository);
+            _carRepository = Substitute.For<IRepository<Car, LicensePlate>>();
+            _unitOfWork.GetRepository<Car, LicensePlate>().Returns(_carRepository);
         }
 
         [Test]

@@ -5,6 +5,7 @@
 namespace {{ namespace }};
 {{~ end ~}}
 
+[System.Diagnostics.DebuggerDisplay("{ToString}")]
 [System.Runtime.CompilerServices.CompilerGenerated]
 [System.Text.Json.Serialization.JsonConverter(typeof({{ type_name }}.JsonConverter))]
 public readonly record struct {{ type_name }}
@@ -32,7 +33,9 @@ public readonly record struct {{ type_name }}
         return false;
     }
 
-    [System.Runtime.CompilerServices.CompilerGenerated]
+    public override string ToString() => _value.ToString();
+
+    [System.Runtime.CompilerServices.CompilerGenerated] 
     internal sealed class JsonConverter : System.Text.Json.Serialization.JsonConverter<{{ type_name }}>
     {
         public override {{ type_name }} Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options)

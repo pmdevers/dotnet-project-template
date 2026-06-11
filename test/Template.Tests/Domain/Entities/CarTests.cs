@@ -15,7 +15,6 @@ public class CarTests
         var car = Car.Create(licensePlate);
 
         // Assert
-        await Assert.That(car.Id).IsNotEqualTo(CarId.Empty);
         await Assert.That(car.LicensePlate).IsEqualTo(licensePlate);
         await Assert.That(car.LicensePlate.ToString()).IsEqualTo("ABC123");
     }
@@ -32,7 +31,7 @@ public class CarTests
         var car2 = Car.Create(licensePlate2);
 
         // Assert
-        await Assert.That(car1.Id).IsNotEqualTo(car2.Id);
+        await Assert.That(car1.LicensePlate).IsNotEqualTo(car2.LicensePlate);
     }
 
     [Test]

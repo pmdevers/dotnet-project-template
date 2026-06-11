@@ -1,5 +1,9 @@
 <Project>
 
+  <PropertyGroup Condition="'$(OutputType)' == 'Exe'">
+    <ApplicationIcon>../../assets/app.ico</ApplicationIcon>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <RestoreLockedMode>true</RestoreLockedMode>

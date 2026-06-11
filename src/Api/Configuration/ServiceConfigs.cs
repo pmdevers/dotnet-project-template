@@ -9,6 +9,7 @@ public static class ServiceConfigs
         {
             var services = builder.Services;
 
+            services.AddOptions();
             services.AddOpenApi();
 
             if (logger.IsEnabled(LogLevel.Information))

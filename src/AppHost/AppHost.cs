@@ -18,9 +18,11 @@ builder.AddKubernetesEnvironment("homelab")
 
 var cache = builder.AddRedis("cache");
 
-var postgres = builder.AddPostgres("appdb")
+var postgres = builder.AddPostgres("postgres")
     .WithPgAdmin()
     .WithLifetime(ContainerLifetime.Persistent);
+
+var appdb = postgres.AddDatabase("appdb");
 
 #pragma warning disable ASPIRECOMPUTE003 // WithContainerRegistry is an experimental API and may change in future releases.
 #pragma warning disable ASPIREPIPELINES003 // WithImagePushOptions is an experimental API and may change in future releases.
@@ -34,7 +36,7 @@ builder.AddProject<Projects.Template_Api>("template-api")
     .WithHttpHealthCheck("/health")
     .WithEnvironment("ASPNETCORE_ENVIRONMENT", builder.Environment.EnvironmentName)
     .WithReference(cache)
-    .WithReference(postgres)
+    .WithReference(appdb)
     .WithUrl("http://localhost:5000");
 #pragma warning restore S1075 // URIs should not be hardcoded
 #pragma warning restore ASPIREPIPELINES003 // WithImagePushOptions is an experimental API and may change in future releases.

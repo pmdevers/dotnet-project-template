@@ -1,16 +1,30 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Template.Api.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class EventSourcedAggregate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LicensePlate = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
@@ -28,6 +42,18 @@ namespace Template.Api.Infrastructure.Data.Migrations
                     table.PrimaryKey("PK_Events", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    LicensePlate = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AggregateId_Version",
                 table: "Events",
@@ -39,7 +65,13 @@ namespace Template.Api.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Cars");
+
+            migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "Reservations");
         }
     }
 }

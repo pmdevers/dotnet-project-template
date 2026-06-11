@@ -6,7 +6,10 @@ using Template.Api.Domain.ValueObjects;
 
 namespace Template.Api.Infrastructure.Data;
 
-public class AppDbContextMigrationService(IServiceScopeFactory scopeFactory, ILogger<AppDbContextMigrationService> logger)
+public class AppDbContextMigrationService(
+    IServiceScopeFactory scopeFactory,
+    IOptions<DatabaseOptions> options,
+    ILogger<AppDbContextMigrationService> logger)
     : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -15,9 +18,8 @@ public class AppDbContextMigrationService(IServiceScopeFactory scopeFactory, ILo
         {
             var scope = scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            var options = scope.ServiceProvider.GetService<IOptions<DatabaseOptions>>();
 
-            if (options?.Value.RecreateOnStartup == true)
+            if (options.Value?.RecreateOnStartup == true)
             {
                 logger.LogWarning("DROPPING database for fresh start (DatabaseOptions:RecreateOnStartup = true)...");
                 await dbContext.Database.EnsureDeletedAsync(cancellationToken);
@@ -28,7 +30,7 @@ public class AppDbContextMigrationService(IServiceScopeFactory scopeFactory, ILo
             await dbContext.Database.MigrateAsync(cancellationToken);
             logger.LogInformation("Database migrations applied successfully.");
 
-            if (options?.Value.RecreateOnStartup == true)
+            if (options.Value?.RecreateOnStartup == true)
             {
                 await SeedInitialDataAsync(dbContext, cancellationToken);
             }
@@ -46,14 +48,13 @@ public class AppDbContextMigrationService(IServiceScopeFactory scopeFactory, ILo
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var carRepo = dbContext.GetRepository<Car, CarId>();
+        var carRepo = dbContext.GetRepository<Car, LicensePlate>();
         var reservationRepo = dbContext.GetRepository<Reservation, ReservationId>();
 
-        var car = await carRepo.TryFindAsync(CarId.Parse("GPP-30-T"), cancellationToken) 
-            ?? Car.Create(LicensePlate.Create("GPP-30-T"));
+        var car = Car.Create(LicensePlate.Create("GPP-30-T"));
+        var reservation = Reservation.Create(CustomerId.New(), ReservationDate.Today(), ReservationDate.Today().AddDays(10));
 
-        var reservation = await reservationRepo.TryFindAsync(ReservationId.Parse("GPP-30-T"), cancellationToken) 
-            ?? Reservation.Create(CustomerId.New(),  ReservationDate.Today(), ReservationDate.Today().AddDays(10));
+        reservation.AttachCar(car.LicensePlate);
 
         carRepo.Add(car);
         reservationRepo.Add(reservation);

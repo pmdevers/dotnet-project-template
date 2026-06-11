@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Template.Api.Domain.Abstractions;
 using Template.Api.Domain.Entities;
+using Template.Api.Domain.ValueObjects;
 using Template.Api.Infrastructure.Data.Models;
 using Template.Api.Infrastructure.Data.Queries;
 
@@ -9,10 +10,11 @@ namespace Template.Api.Infrastructure.Data;
 
 public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IUnitOfWork
 {
-    private Dictionary<string, AggregateRoot> EventSourced { get; } = [];
+    public Dictionary<string, AggregateRoot> EventSourced { get; } = [];
 
     public DbSet<EventDocument> Events { get; set; }
     public DbSet<Car> Cars { get; set; }
+    public DbSet<ReservationModel> Reservations { get; set; }
 
     public IRepository<TAggregate, TId> GetRepository<TAggregate, TId>()
         where TAggregate : AggregateRoot
@@ -25,7 +27,7 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var aggregate in EventSourced)
         {
@@ -47,13 +49,13 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
                 dbSet.Add(eventDoc);
             }
         }
-        EventSourced.Clear();
+        // EventSourced.Clear();
 
-        return base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(cancellationToken);
     }
 }
 
-public partial class AppDbContext : IRepository<Car, CarId>
+public partial class AppDbContext : IRepository<Car, LicensePlate>
 {
     public void Add(Car entity)
         => Cars.Add(entity);
@@ -61,8 +63,8 @@ public partial class AppDbContext : IRepository<Car, CarId>
     public void Delete(Car entity)
         => Cars.Remove(entity);
 
-    public Task<Car?> TryFindAsync(CarId id, CancellationToken cancellationToken = default)
-        => Cars.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    public Task<Car?> TryFindAsync(LicensePlate licensePlate, CancellationToken cancellationToken = default)
+        => Cars.FirstOrDefaultAsync(x => x.LicensePlate == licensePlate, cancellationToken);
 }
 
 public partial class AppDbContext : IRepository<Reservation, ReservationId>

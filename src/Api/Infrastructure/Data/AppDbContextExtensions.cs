@@ -26,6 +26,9 @@ public static class AppDbContextExtensions
 
             services.AddScoped<ICarQueries, CarQueries>();
 
+            services.AddMessageHandler<ReservationProjections>();
+
+
             return services;
         }
     }

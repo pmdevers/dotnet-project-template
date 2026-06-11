@@ -11,14 +11,14 @@ public class Register
 
     public static async Task<IResult> Handle([FromBody] Command command, IUnitOfWork uow)
     {
-        var carRepo = uow.GetRepository<Car, CarId>();
+        var carRepo = uow.GetRepository<Car, LicensePlate>();
         var car = Car.Create(command.LicensePlate);
 
         carRepo.Add(car);
 
         await uow.SaveChangesAsync();
 
-        return TypedResults.Created($"/cars/{car.Id}", car);
+        return TypedResults.Created($"/cars/{car.LicensePlate}", car);
 
     }
 }

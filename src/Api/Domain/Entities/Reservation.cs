@@ -9,7 +9,7 @@ public class Reservation : AggregateRoot
 {
     public ReservationId Id { get; private set; }
     public CustomerId CustomerId { get; private set; }
-    public CarId CarId { get; private set; }
+    public LicensePlate LicensePlate { get; private set; }
 
     public ReservationDate StartDate { get; private set; }
     public ReservationDate EndDate { get; private set; }
@@ -23,13 +23,9 @@ public class Reservation : AggregateRoot
         return reservation;
     }
 
-    public void AttachCar(CarId carId)
+    public void AttachCar(LicensePlate licensePlate)
     {
-        if (carId == CarId.Empty)
-        {
-            throw new ArgumentNullException(nameof(carId));
-        }
-        RecordEvent(new ReservationCarAttachedEvent(Id, carId));
+        RecordEvent(new ReservationCarAttachedEvent(Id, licensePlate));
     }
 
     internal void Apply(ReservationCreatedEvent @event)
@@ -42,7 +38,7 @@ public class Reservation : AggregateRoot
 
     internal void Apply(ReservationCarAttachedEvent @event)
     {
-        CarId = @event.CarId;
+        LicensePlate = @event.LicensePlate;
     }
 }
 
@@ -55,4 +51,4 @@ public enum ReservationStatus
 }
 
 public record ReservationCreatedEvent(ReservationId ReservationId, CustomerId CustomerId, ReservationDate StartDate, ReservationDate EndDate) : DomainEvent;
-public record ReservationCarAttachedEvent(ReservationId ReservationId, CarId CarId) : DomainEvent;
+public record ReservationCarAttachedEvent(ReservationId ReservationId, LicensePlate LicensePlate) : DomainEvent;
