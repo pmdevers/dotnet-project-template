@@ -1,13 +1,15 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.ValueObjects;
 
+[JsonConverter(typeof(ValueObjectJsonConverter))]
 public readonly record struct LicensePlate(string Value) : IValueObject<LicensePlate>
 {
     public string Value { get; init; }
-        = string.IsNullOrWhiteSpace(Value) 
-        ? throw new ArgumentException("LicensePlate cannot be empty.") 
+        = string.IsNullOrWhiteSpace(Value)
+        ? throw new ArgumentException("LicensePlate cannot be empty.")
         : Value.Trim().ToUpper();
 
     public static LicensePlate Create(string value) => new(value);

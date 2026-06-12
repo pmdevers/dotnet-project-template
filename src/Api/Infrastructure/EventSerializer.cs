@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Template.Api.Domain.Abstractions;
 
-namespace Template.Api.Infrastructure.Data;
+namespace Template.Api.Infrastructure;
 
 public record UnkownEvent(string TypeName, string Json) : DomainEvent;
 

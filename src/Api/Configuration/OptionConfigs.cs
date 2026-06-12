@@ -15,6 +15,7 @@ public static class OptionConfigs
 
             services
                 .Configure<DatabaseOptions>(configuration.GetSection("DatabaseOptions"))
+                .Configure<EventBusOptions>(configuration.GetSection("EventbusOptions"))
 
                 // Configure Web Behavior
                 .Configure<CookiePolicyOptions>(options =>

@@ -1,12 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Template.Api.Domain.Abstractions;
 
 namespace Template.Api.Domain.ValueObjects;
 
+[JsonConverter(typeof(ValueObjectJsonConverter))]
 public readonly record struct ReservationDate(DateOnly Date, TimeProvider? timeProvider = null) : IValueObject<ReservationDate>
 {
-    public DateOnly Value { get; init; } 
-        = Date < DateOnly.FromDateTime((timeProvider ?? TimeProvider.System).GetUtcNow().Date) 
+    public DateOnly Value { get; init; }
+        = Date < DateOnly.FromDateTime((timeProvider ?? TimeProvider.System).GetUtcNow().Date)
         ? throw new ArgumentException("Reservation date cannot be in the past.")
         : Date;
 
@@ -16,7 +18,7 @@ public readonly record struct ReservationDate(DateOnly Date, TimeProvider? timeP
         var today = provider.GetUtcNow().Date;
         return Create(DateOnly.FromDateTime(today), provider);
     }
-        
+
     public static ReservationDate Create(DateOnly value, TimeProvider? timeProvider = null)
         => new(value, timeProvider);
 

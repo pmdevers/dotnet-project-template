@@ -16,7 +16,8 @@ builder.AddKubernetesEnvironment("homelab")
             .WithNamespace("template");
     });
 
-var cache = builder.AddRedis("cache");
+var cache = builder.AddRedis("cache")
+    .WithRedisCommander(commander => commander.WithHostPort(8081));
 
 var postgres = builder.AddPostgres("postgres")
     .WithPgAdmin()

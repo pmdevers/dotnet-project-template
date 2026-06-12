@@ -15,9 +15,12 @@ public static class InfrastructureExtensions
             var connectionString = configuration.GetConnectionString("appdb")
                 ?? throw new InvalidOperationException("DefaultConnection is not set in the configuration.");
 
+
+            builder.AddRedisClient("cache");
+
             services.AddAppDbContext(connectionString);
 
-            services.AddEventBus();
+            services.AddRedisEventBus();
 
             if (logger.IsEnabled(LogLevel.Information))
             {
