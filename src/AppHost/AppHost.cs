@@ -38,6 +38,7 @@ builder.AddProject<Projects.Template_Api>("template-api")
     .WithEnvironment("ASPNETCORE_ENVIRONMENT", builder.Environment.EnvironmentName)
     .WithReference(cache)
     .WithReference(appdb)
+    .WithReference(postgres)
     .WithUrl("http://localhost:5000");
 #pragma warning restore S1075 // URIs should not be hardcoded
 #pragma warning restore ASPIREPIPELINES003 // WithImagePushOptions is an experimental API and may change in future releases.

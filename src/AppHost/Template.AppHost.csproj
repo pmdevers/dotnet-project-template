@@ -8,6 +8,9 @@
     <UserSecretsId>44de2c33-3e4c-4063-b83b-bcdbd04778f7</UserSecretsId>
     <IsPackable>false</IsPackable>
     <IsPublishable>true</IsPublishable>
+    
+    <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+    <RestoreLockedMode>false</RestoreLockedMode>
   </PropertyGroup>
 
   <ItemGroup>
