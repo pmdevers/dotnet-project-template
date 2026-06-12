@@ -26,4 +26,15 @@
     <EmbeddedResource Include="Templates/**/*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageVersion Update="MessagePackAnalyzer" Version="3.1.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MessagePackAnalyzer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>

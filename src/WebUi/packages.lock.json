@@ -10,20 +10,20 @@
       },
       "Microsoft.Extensions.FileProviders.Abstractions": {
         "type": "Direct",
-        "requested": "[10.0.8, )",
-        "resolved": "10.0.8",
-        "contentHash": "U+oquaPxFdY8lYeEIWO/AD7jDIl9sPW6aVWMQRHU/pZ/SWpLcOrAj2fcLe1HwXl4sYw1ONI56K/eELT3xr4RRQ==",
+        "requested": "[10.0.9, )",
+        "resolved": "10.0.9",
+        "contentHash": "Oxn4vqDk+EwceTMpZxVm7L/UZEAM1qIQlNP1+7tBZckD+P4SKrm/5X4gMTPCTdpnau/xY8Sb4/0d6onomSg4ZA==",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "10.0.8"
+          "Microsoft.Extensions.Primitives": "10.0.9"
         }
       },
       "Microsoft.Extensions.FileProviders.Embedded": {
         "type": "Direct",
-        "requested": "[10.0.8, )",
-        "resolved": "10.0.8",
-        "contentHash": "Wv9s0rmrmUEma268HCqqcHGgJI30O9mqMxnORZ/QFxtbjoTFEuMvnqL2kIfbZcOGD6XF6II47Hc6YSff0jKGkw==",
+        "requested": "[10.0.9, )",
+        "resolved": "10.0.9",
+        "contentHash": "UpRgjjSUmF7KYZTIv1Zd2Y0Wv2oK9jE+Jmyp4UMynTowjvJGG1yrRe2JodYyVgcDgZF2auGwYEl+U0J1+YhBRw==",
         "dependencies": {
-          "Microsoft.Extensions.FileProviders.Abstractions": "10.0.8"
+          "Microsoft.Extensions.FileProviders.Abstractions": "10.0.9"
         }
       },
       "SerilogAnalyzer": {
@@ -40,8 +40,8 @@
       },
       "Microsoft.Extensions.Primitives": {
         "type": "Transitive",
-        "resolved": "10.0.8",
-        "contentHash": "OBPo4nYhMyIbtueoC10CBm6AGAbo/A9IV8QQ/6ryZS7VvmqpGT7hunazeHLxFawRzn3oLOq4jhqhpBX4tfswWQ=="
+        "resolved": "10.0.9",
+        "contentHash": "fmEbAUFsaIKirgLt/lYhuFRBwhcSJN31jjHgCdbQxJiWOum6EdLjkbgGuukSP9z/a+9LibaxII/kF+GwOXgC4g=="
       }
     }
   }

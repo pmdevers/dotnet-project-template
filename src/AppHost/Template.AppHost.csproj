@@ -14,10 +14,22 @@
     <PackageReference Include="Aspire.Hosting.Kubernetes" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
     <PackageReference Include="Aspire.Hosting.Redis" />
+    <PackageReference Include="MessagePack" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../Api/Template.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageVersion Update="MessagePackAnalyzer" Version="3.1.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="MessagePackAnalyzer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
