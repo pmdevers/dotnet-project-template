@@ -71,7 +71,7 @@ function validateStep1() {
 }
 
 function validateStep3() {
-  if (!paymentData.value.cardNumber.replace(/\s/g, '').length === 16) {
+  if (paymentData.value.cardNumber.replace(/\s/g, '').length !== 16) {
     alert('Please enter valid card number')
     return false
   }

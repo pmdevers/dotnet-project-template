@@ -16,6 +16,8 @@ const formattedDate = (dateStr: string) => {
     day: 'numeric',
   })
 }
+
+const printPage = () => window.print()
 </script>
 
 <template>
@@ -172,7 +174,7 @@ const formattedDate = (dateStr: string) => {
         <!-- Action Buttons -->
         <div class="bg-gray-50 border-t border-gray-200 p-8 flex flex-col sm:flex-row gap-4">
           <button
-            @click="window.print()"
+            @click="printPage"
             class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-100 transition-colors"
           >
             Print Confirmation
