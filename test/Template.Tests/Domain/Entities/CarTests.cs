@@ -12,7 +12,7 @@ public class CarTests
         var licensePlate = LicensePlate.Create("ABC123");
 
         // Act
-        var car = Car.Create(licensePlate);
+        var car = Car.Create(licensePlate, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
 
         // Assert
         await Assert.That(car.LicensePlate).IsEqualTo(licensePlate);
@@ -27,8 +27,8 @@ public class CarTests
         var licensePlate2 = LicensePlate.Create("XYZ789");
 
         // Act
-        var car1 = Car.Create(licensePlate1);
-        var car2 = Car.Create(licensePlate2);
+        var car1 = Car.Create(licensePlate1, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
+        var car2 = Car.Create(licensePlate2, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
 
         // Assert
         await Assert.That(car1.LicensePlate).IsNotEqualTo(car2.LicensePlate);
@@ -41,7 +41,7 @@ public class CarTests
         var licensePlate = LicensePlate.Create("abc123");
 
         // Act
-        var car = Car.Create(licensePlate);
+        var car = Car.Create(licensePlate, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
 
         // Assert
         await Assert.That(car.LicensePlate.ToString()).IsEqualTo("ABC123");
@@ -54,7 +54,7 @@ public class CarTests
         var licensePlate = LicensePlate.Create("ABC123");
 
         // Act
-        var car = Car.Create(licensePlate);
+        var car = Car.Create(licensePlate, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
         var events = car.GetUncommittedEvents();
 
         // Assert

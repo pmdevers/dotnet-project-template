@@ -51,7 +51,10 @@ public class AppDbContextMigrationService(
         var carRepo = dbContext.GetRepository<Car, LicensePlate>();
         var reservationRepo = dbContext.GetRepository<Reservation, ReservationId>();
 
-        var car = Car.Create(LicensePlate.Create("GPP-30-T"));
+        var car = Car.Create(LicensePlate.Create("GPP-30-T"), "Car Name", "Car Description", "Car Brand", "Car Model", Category.Standard, new Money(100m, Currency.Dollar));
+
+        car.SetSpecifications(4, 2, Transmission.Automatic, FuelType.Petrol, 150);
+
         var reservation = Reservation.Create(CustomerId.New(), ReservationDate.Today(), ReservationDate.Today().AddDays(10));
 
         reservation.AttachCar(car.LicensePlate);

@@ -49,7 +49,6 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
                 dbSet.Add(eventDoc);
             }
         }
-        // EventSourced.Clear();
 
         return await base.SaveChangesAsync(cancellationToken);
     }

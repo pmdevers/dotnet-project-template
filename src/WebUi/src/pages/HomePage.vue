@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import CarCard from '../components/CarCard.vue'
 import { cars } from '../stores/cars'
@@ -12,7 +12,7 @@ const searchForm = ref({
   carType: 'all',
 })
 
-const featuredCars = cars.value.slice(0, 3)
+const featuredCars = computed(() => cars.value.slice(0, 3))
 
 function handleSearch() {
   router.push('/cars')

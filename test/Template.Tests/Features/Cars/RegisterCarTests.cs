@@ -26,7 +26,7 @@ public class RegisterCarTests
         {
             // Arrange
             var licensePlate = LicensePlate.Create("ABC123");
-            var command = new Register.Command(licensePlate);
+            var command = new Register.Command(licensePlate, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
 
             // Act
             var result = await Register.Handle(command, _unitOfWork);
@@ -40,7 +40,7 @@ public class RegisterCarTests
         {
             // Arrange
             var licensePlate = LicensePlate.Create("XYZ789");
-            var command = new Register.Command(licensePlate);
+            var command = new Register.Command(licensePlate, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
 
             // Act
             await Register.Handle(command, _unitOfWork);
@@ -54,7 +54,7 @@ public class RegisterCarTests
         {
             // Arrange
             var licensePlate = LicensePlate.Create("LMN456");
-            var command = new Register.Command(licensePlate);
+            var command = new Register.Command(licensePlate, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
 
             // Act
             await Register.Handle(command, _unitOfWork);
@@ -68,7 +68,7 @@ public class RegisterCarTests
         {
             // Arrange
             var licensePlate = LicensePlate.Create("DEF123");
-            var command = new Register.Command(licensePlate);
+            var command = new Register.Command(licensePlate, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
 
             // Act
             var result = await Register.Handle(command, _unitOfWork);
@@ -82,7 +82,7 @@ public class RegisterCarTests
         {
             // Arrange
             var licensePlate = LicensePlate.Create("GHI789");
-            var command = new Register.Command(licensePlate);
+            var command = new Register.Command(licensePlate, "Test", "Description", "Brand", "Model", Category.Premium, new(100, Currency.Dollar));
 
             // Act
             var result = await Register.Handle(command, _unitOfWork);

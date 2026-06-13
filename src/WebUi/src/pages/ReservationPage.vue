@@ -28,6 +28,8 @@ const paymentData = ref({
   cardholderName: '',
 })
 
+const submitting = ref(false)
+
 const calculateDays = computed(() => {
   if (!startDate.value || !endDate.value) return 0
   const start = new Date(startDate.value)
@@ -105,21 +107,30 @@ function prevStep() {
   }
 }
 
-function completeReservation() {
+async function completeReservation() {
   if (!car.value) return
+  if (submitting.value) return
 
-  const reservation = createReservation({
-    carId: car.value.id,
-    customer: customerData.value,
-    startDate: startDate.value,
-    endDate: endDate.value,
-    totalPrice: rentalTotal.value,
-    reservationFee: reservationFee.value,
-  })
+  submitting.value = true
 
-  router.push({
-    path: `/confirmation/${reservation.id}`,
-  })
+  try {
+    const reservation = await createReservation({
+      carId: car.value.id,
+      customer: customerData.value,
+      startDate: startDate.value,
+      endDate: endDate.value,
+      totalPrice: rentalTotal.value,
+      reservationFee: reservationFee.value,
+    })
+
+    router.push({
+      path: `/confirmation/${reservation.id}`,
+    })
+  } catch {
+    alert('Unable to create reservation right now. Please try again.')
+  } finally {
+    submitting.value = false
+  }
 }
 
 function formatCardNumber(value: string) {
@@ -382,9 +393,10 @@ function formatCardNumber(value: string) {
 
         <button
           @click="step === 4 ? completeReservation() : nextStep()"
+          :disabled="submitting"
           class="px-8 py-3 bg-accent hover:bg-accent-dark text-white font-semibold rounded-lg transition-colors"
         >
-          {{ step === 4 ? 'Confirm Reservation' : 'Next Step' }}
+          {{ submitting ? 'Submitting...' : step === 4 ? 'Confirm Reservation' : 'Next Step' }}
         </button>
       </div>
     </div>

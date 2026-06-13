@@ -17,18 +17,26 @@ public static class ApiEndpoints
 
         public WebApplication MapCarEndpoints()
         {
-            var group = app.MapGroup("/cars").WithTags("Cars");
+            var group = app.MapGroup("/api/cars").WithTags("Cars");
+
+            group.MapGet("/", BrowseCars.Handle)
+                .WithName(nameof(BrowseCars))
+                .WithDescription("Browse available cars.");
 
             group.MapPost("/", Register.Handle)
-                .WithName("RegisterCar")
+                .WithName(nameof(Register))
                 .WithDescription("Registers a new car with the specified license plate.");
+
+            group.MapPost("/{id}/specifications", UpdateSpecifications.Handle)
+                .WithName(nameof(UpdateSpecifications))
+                .WithDescription("Updates the specifications of an existing car.");
 
             return app;
         }
 
         public WebApplication MapReservationEndpoints()
         {
-            var group = app.MapGroup("/reservations").WithTags("Reservations");
+            var group = app.MapGroup("/api/reservations").WithTags("Reservations");
             // Define reservation endpoints here
 
             group.MapGet("/{id}", GetReservationById.Handle)

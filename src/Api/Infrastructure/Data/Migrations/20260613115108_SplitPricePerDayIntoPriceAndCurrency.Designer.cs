@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Template.Api.Infrastructure.Data;
@@ -12,9 +13,11 @@ using Template.Api.Infrastructure.Data;
 namespace Template.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260613115108_SplitPricePerDayIntoPriceAndCurrency")]
+    partial class SplitPricePerDayIntoPriceAndCurrency
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,46 +130,6 @@ namespace Template.Api.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reservations");
-                });
-
-            modelBuilder.Entity("Template.Api.Domain.Entities.Car", b =>
-                {
-                    b.OwnsOne("Template.Api.Domain.Entities.Specifications", "Specifications", b1 =>
-                        {
-                            b1.Property<int>("CarId")
-                                .HasColumnType("integer");
-
-                            b1.Property<string>("FuelType")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("FuelType");
-
-                            b1.Property<long>("HorsePower")
-                                .HasColumnType("bigint")
-                                .HasColumnName("HorsePower");
-
-                            b1.Property<long>("Luggage")
-                                .HasColumnType("bigint")
-                                .HasColumnName("Luggage");
-
-                            b1.Property<long>("Seats")
-                                .HasColumnType("bigint")
-                                .HasColumnName("Seats");
-
-                            b1.Property<string>("Transmission")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("Transmission");
-
-                            b1.HasKey("CarId");
-
-                            b1.ToTable("Cars");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CarId");
-                        });
-
-                    b.Navigation("Specifications");
                 });
 #pragma warning restore 612, 618
         }

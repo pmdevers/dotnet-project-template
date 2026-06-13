@@ -1,13 +1,13 @@
 namespace Template.Api.Domain.Abstractions;
 
-public class Results<T, TError>
+public class Result<T, TError>
 {
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
     public T? Value { get; }
     public TError? Error { get; }
 
-    private Results(bool isSuccess, T? value, TError? error)
+    private Result(bool isSuccess, T? value, TError? error)
     {
         if (isSuccess)
         {
@@ -31,47 +31,47 @@ public class Results<T, TError>
         Error = error;
     }
 
-    public static Results<T, TError> Success(T value)
+    public static Result<T, TError> Success(T value)
     {
         ArgumentNullException.ThrowIfNull(value);
         return new(true, value, default);
     }
 
-    public static Results<T, TError> Failure(TError error)
+    public static Result<T, TError> Failure(TError error)
     {
         ArgumentNullException.ThrowIfNull(error);
         return new(false, default, error);
     }
 }
 
-public static class Results
+public static class Result
 {
-    public static Results<T, TError> Success<T, TError>(T value) => Results<T, TError>.Success(value);
-    public static Results<T, TError> Failure<T, TError>(TError error) => Results<T, TError>.Failure(error);
+    public static Result<T, TError> Success<T, TError>(T value) => Result<T, TError>.Success(value);
+    public static Result<T, TError> Failure<T, TError>(TError error) => Result<T, TError>.Failure(error);
 
-    extension<T, TError>(Results<T, TError> results)
+    extension<T, TError>(Result<T, TError> results)
     {
         public bool IsFailure() => results.IsFailure;
 
-        public Results<T2, TError> Map<T2>(Func<T, T2> mapFunc)
+        public Result<T2, TError> Map<T2>(Func<T, T2> mapFunc)
             => results.IsSuccess
                 ? Success<T2, TError>(mapFunc(results.Value!))
                 : Failure<T2, TError>(results.Error!);
 
-        public Results<T2, TError> Bind<T2>(Func<T, Results<T2, TError>> bind)
+        public Result<T2, TError> Bind<T2>(Func<T, Result<T2, TError>> bind)
             => results.IsSuccess
                 ? bind(results.Value!)
                 : Failure<T2, TError>(results.Error!);
 
-        public Results<T2, TError> Bind<T2>(Func<Results<T, TError>, Results<T2, TError>> bind)
+        public Result<T2, TError> Bind<T2>(Func<Result<T, TError>, Result<T2, TError>> bind)
             => bind(results);
 
-        public Task<Results<T2, TError>> BindAsync<T2>(Func<T, Task<Results<T2, TError>>> bind)
+        public Task<Result<T2, TError>> BindAsync<T2>(Func<T, Task<Result<T2, TError>>> bind)
             => results.IsSuccess
                 ? bind(results.Value!)
                 : Task.FromResult(Failure<T2, TError>(results.Error!));
 
-        public Results<T, TError2> MapError<TError2>(Func<TError, TError2> mapFunc)
+        public Result<T, TError2> MapError<TError2>(Func<TError, TError2> mapFunc)
             => results.IsSuccess
                 ? Success<T, TError2>(results.Value!)
                 : Failure<T, TError2>(mapFunc(results.Error!));
@@ -97,7 +97,7 @@ public static class Results
                 : onFailure(results.Error!);
     }
 
-    extension<T, TError>(Task<Results<T, TError>> resultsTask)
+    extension<T, TError>(Task<Result<T, TError>> resultsTask)
     {
         public async Task<bool> IsFailureAsync()
         {
@@ -105,7 +105,7 @@ public static class Results
             return result.IsFailure;
         }
 
-        public async Task<Results<T2, TError>> MapAsync<T2>(Func<T, T2> mapFunc)
+        public async Task<Result<T2, TError>> MapAsync<T2>(Func<T, T2> mapFunc)
         {
             var result = await resultsTask;
             return result.IsSuccess
@@ -113,7 +113,7 @@ public static class Results
                 : Failure<T2, TError>(result.Error!);
         }
 
-        public async Task<Results<T2, TError>> BindAsync<T2>(Func<T, Results<T2, TError>> bind)
+        public async Task<Result<T2, TError>> BindAsync<T2>(Func<T, Result<T2, TError>> bind)
         {
             var result = await resultsTask;
             return result.IsSuccess
@@ -121,7 +121,7 @@ public static class Results
                 : Failure<T2, TError>(result.Error!);
         }
 
-        public async Task<Results<T2, TError>> BindAsync<T2>(Func<T, Task<Results<T2, TError>>> bind)
+        public async Task<Result<T2, TError>> BindAsync<T2>(Func<T, Task<Result<T2, TError>>> bind)
         {
             var result = await resultsTask;
             return result.IsSuccess
@@ -129,7 +129,7 @@ public static class Results
                 : Failure<T2, TError>(result.Error!);
         }
 
-        public async Task<Results<T, TError2>> MapErrorAsync<TError2>(Func<TError, TError2> mapFunc)
+        public async Task<Result<T, TError2>> MapErrorAsync<TError2>(Func<TError, TError2> mapFunc)
         {
             var result = await resultsTask;
             return result.IsSuccess

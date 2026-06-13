@@ -140,6 +140,7 @@ await unitOfWork.SaveChangesAsync(); // Triggers event dispatch
 1. Create entity in `Domain/Entities`
 2. Create configuration in `Infrastructure/Data/Config`
 3. Add `DbSet<T>` to `AppDbContext`
+4. Set Environment variable for connection string (if needed): `$env:POSTGRES_CONNECTION_STRING='Host=localhost;Port=5432;Database=CarRental;Username=postgres;Password=postgres'` 
 4. Create migration: `dotnet ef migrations add "{YourMigrationName}" --project src\Api\Template.Api.csproj --output-dir Infrastructure/Data/Migrations`
 
 ### Add an Endpoint

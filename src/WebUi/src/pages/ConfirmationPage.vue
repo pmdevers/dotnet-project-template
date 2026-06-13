@@ -1,13 +1,29 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { reservations } from '../stores/cars'
+import { fetchReservationById, getReservationById } from '../stores/cars'
+import type { Reservation } from '../types'
 
 const route = useRoute()
+const reservation = ref<Reservation | null>(null)
+const loading = ref(true)
 
-const reservation = computed(() => {
-  return reservations.value.find((r) => r.id === route.params.reservationId)
-})
+const reservationId = computed(() => route.params.reservationId as string)
+
+async function loadReservation() {
+  loading.value = true
+  const id = reservationId.value
+
+  const cached = getReservationById(id)
+  if (cached) {
+    reservation.value = cached
+    loading.value = false
+    return
+  }
+
+  reservation.value = (await fetchReservationById(id)) ?? null
+  loading.value = false
+}
 
 const formattedDate = (dateStr: string) => {
   return new Date(dateStr).toLocaleDateString('en-US', {
@@ -18,9 +34,17 @@ const formattedDate = (dateStr: string) => {
 }
 
 const printPage = () => window.print()
+
+onMounted(() => {
+  void loadReservation()
+})
 </script>
 
 <template>
+  <div v-if="loading" class="min-h-screen flex items-center justify-center">
+    <p class="text-gray-600 text-lg">Loading reservation...</p>
+  </div>
+
   <div class="min-h-screen bg-gradient-to-br from-green-50 to-green-100 py-12" v-if="reservation">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Success Card -->
@@ -201,7 +225,7 @@ const printPage = () => window.print()
   </div>
 
   <!-- Not Found -->
-  <div v-else class="min-h-screen flex items-center justify-center">
+  <div v-else-if="!loading" class="min-h-screen flex items-center justify-center">
     <div class="text-center">
       <p class="text-gray-600 mb-4 text-lg">Reservation not found</p>
       <router-link to="/" class="text-accent hover:text-accent-dark font-medium">

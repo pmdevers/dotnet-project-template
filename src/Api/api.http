@@ -1,6 +1,57 @@
 @Api_HostAddress = http://localhost:5193
 
-GET {{Api_HostAddress}}/weatherforecast/
+### Browse cars
+GET {{Api_HostAddress}}/api/cars?page=1&itemsPerPage=10
+Accept: application/json
+
+###
+
+### Register car
+POST {{Api_HostAddress}}/api/cars/
+Content-Type: application/json
+
+{
+  "licensePlate": "aaa123",
+  "name": "Model Y",
+  "description": "Electric sedan",
+  "brand": "Tesla",
+  "model": "Long Range",
+  "category": "Economy",
+  "pricePerDay": "EUR 130"
+}
+
+###
+
+### Update car specifications
+@LicensePlate = AAA123
+POST {{Api_HostAddress}}/api/cars/{{LicensePlate}}/specifications
+Content-Type: application/json
+
+{
+  "seats": 5,
+  "luggage": 2,
+  "transmission": "Manual",
+  "fuelType": "Electric",
+  "horsePower": 250
+}
+
+###
+
+### Create reservation
+POST {{Api_HostAddress}}/api/reservations/
+Content-Type: application/json
+
+{
+  "customerId": "00000000-0000-0000-0000-000000000001",
+  "startDate": "2026-06-20",
+  "endDate": "2026-06-23"
+}
+
+###
+
+### Get reservation by id
+@ReservationId = 00000000-0000-0000-0000-000000000001
+GET {{Api_HostAddress}}/api/reservations/{{ReservationId}}
 Accept: application/json
 
 ###
