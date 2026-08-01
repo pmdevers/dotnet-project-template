@@ -14,7 +14,7 @@ public class Result<T, TError>
             ArgumentNullException.ThrowIfNull(value);
             if (error is not null)
             {
-                throw new ArgumentException("Successful result cannot have an error.", nameof(error));
+                throw Errors.SuccessfulResultCannotHaveError(nameof(error));
             }
         }
         else
@@ -22,7 +22,7 @@ public class Result<T, TError>
             ArgumentNullException.ThrowIfNull(error);
             if (value is not null)
             {
-                throw new ArgumentException("Failed result cannot have a value.", nameof(value));
+                throw Errors.FailedResultCannotHaveValue(nameof(value));
             }
         }
 

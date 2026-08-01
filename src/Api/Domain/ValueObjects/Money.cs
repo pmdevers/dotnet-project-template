@@ -13,7 +13,7 @@ public readonly record struct Money(Amount Value, Currency Currency) : IValueObj
 
     public Currency Currency { get; init; } =
         Currency == Currency.Empty
-            ? throw new ArgumentException("Currency cannot be empty.", nameof(Currency))
+            ? throw Errors.MoneyCurrencyCannotBeEmpty(nameof(Currency))
             : Currency;
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? formatProvider, [MaybeNullWhen(false)] out Money result)

@@ -74,7 +74,7 @@ public partial class AppDbContext : IRepository<Reservation, ReservationId>
 
         if (string.IsNullOrEmpty(key))
         {
-            throw new InvalidOperationException("Aggregate root must have a valid Id.");
+            throw Errors.AggregateRootMustHaveValidId();
         }
 
         EventSourced.Add(key, entity);

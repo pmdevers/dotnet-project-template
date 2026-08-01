@@ -31,7 +31,7 @@ public class ValueObjectConverter<T> : JsonConverter<T>
     {
         if (reader.TokenType is JsonTokenType.Null)
         {
-            throw new JsonException($"Cannot convert null to {typeof(T).Name}.");
+            throw Errors.CannotConvertNullToType(typeof(T).Name);
         }
 
         var value = reader.TokenType switch
@@ -40,7 +40,7 @@ public class ValueObjectConverter<T> : JsonConverter<T>
             JsonTokenType.Number => reader.GetDecimal().ToString(System.Globalization.CultureInfo.InvariantCulture),
             JsonTokenType.True => bool.TrueString,
             JsonTokenType.False => bool.FalseString,
-            _ => throw new JsonException($"Token type '{reader.TokenType}' is not supported for {typeof(T).Name}.")
+            _ => throw Errors.UnsupportedTokenTypeForType(reader.TokenType, typeof(T).Name)
         };
 
         if (T.TryParse(value, null, out var result))
@@ -48,7 +48,7 @@ public class ValueObjectConverter<T> : JsonConverter<T>
             return result;
         }
 
-        throw new JsonException($"Invalid {typeof(T).Name} value '{value}'.");
+        throw Errors.InvalidValueObjectValue(typeof(T).Name, value);
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)

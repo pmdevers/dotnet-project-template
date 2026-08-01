@@ -9,7 +9,7 @@ public readonly record struct ReservationDate(DateOnly Date, TimeProvider? timeP
 {
     public DateOnly Value { get; init; }
         = Date < DateOnly.FromDateTime((timeProvider ?? TimeProvider.System).GetUtcNow().Date)
-        ? throw new ArgumentException("Reservation date cannot be in the past.")
+        ? throw Errors.ReservationDateCannotBeInThePast()
         : Date;
 
     public static ReservationDate Today(TimeProvider? timeProvider = null)

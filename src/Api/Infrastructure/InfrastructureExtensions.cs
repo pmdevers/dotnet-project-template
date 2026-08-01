@@ -13,7 +13,7 @@ public static class InfrastructureExtensions
             var services = builder.Services;
 
             var connectionString = configuration.GetConnectionString("appdb")
-                ?? throw new InvalidOperationException("DefaultConnection is not set in the configuration.");
+                ?? throw Errors.DefaultConnectionIsNotSet();
 
 
             builder.AddRedisClient("cache");
@@ -24,7 +24,7 @@ public static class InfrastructureExtensions
 
             if (logger.IsEnabled(LogLevel.Information))
             {
-                logger.LogInformation("Infrastructure Services Registered.");
+                logger.ServicesRegistered("Infrastructure");
             }
 
             return builder;

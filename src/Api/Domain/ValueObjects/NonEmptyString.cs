@@ -9,7 +9,7 @@ public readonly record struct NonEmptyString(string Value) : IValueObject<NonEmp
 {
     public string Value { get; init; }
         = string.IsNullOrWhiteSpace(Value)
-        ? throw new ArgumentException("Value cannot be empty.", nameof(Value))
+        ? throw Errors.ValueCannotBeEmpty(nameof(Value))
         : Value;
 
     public static NonEmptyString Create(string value)

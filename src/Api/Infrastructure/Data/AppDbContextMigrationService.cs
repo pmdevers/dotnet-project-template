@@ -21,14 +21,14 @@ public class AppDbContextMigrationService(
 
             if (options.Value?.RecreateOnStartup == true)
             {
-                logger.LogWarning("DROPPING database for fresh start (DatabaseOptions:RecreateOnStartup = true)...");
+                logger.DroppingDatabaseForFreshStart();
                 await dbContext.Database.EnsureDeletedAsync(cancellationToken);
-                logger.LogInformation("Database dropped.");
+                logger.DatabaseDropped();
             }
 
-            logger.LogInformation("Applying pending database migrations...");
+            logger.ApplyingPendingDatabaseMigrations();
             await dbContext.Database.MigrateAsync(cancellationToken);
-            logger.LogInformation("Database migrations applied successfully.");
+            logger.DatabaseMigrationsAppliedSuccessfully();
 
             if (options.Value?.RecreateOnStartup == true)
             {
@@ -38,7 +38,7 @@ public class AppDbContextMigrationService(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while seeding the database.");
+            logger.DatabaseSeedingError(ex);
         }
     }
 

@@ -12,7 +12,7 @@ public record PagedResults<T>
         ArgumentNullException.ThrowIfNull(items);
         if (totalCount < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(totalCount), "Total count cannot be negative.");
+            throw Errors.TotalCountCannotBeNegative(nameof(totalCount));
         }
         Items = items;
         TotalCount = totalCount;

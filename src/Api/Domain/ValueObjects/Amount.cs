@@ -12,7 +12,7 @@ public readonly record struct Amount(decimal value) : IValueObject<Amount>
 
     public decimal Value { get; init; } =
         value < 0m
-            ? throw new ArgumentOutOfRangeException(nameof(value), "Amount cannot be negative.")
+            ? throw Errors.AmountCannotBeNegative(nameof(value))
             : value;
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? formatProvider, [MaybeNullWhen(false)] out Amount result)

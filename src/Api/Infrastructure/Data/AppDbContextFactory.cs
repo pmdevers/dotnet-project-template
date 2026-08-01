@@ -10,7 +10,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseNpgsql(
                 Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING")
-                ?? throw new InvalidOperationException("POSTGRES_CONNECTION_STRING environment variable is not set."))
+                ?? throw Errors.PostgresConnectionStringEnvironmentVariableIsNotSet())
             .Options;
 
         return new AppDbContext(options);

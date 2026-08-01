@@ -9,7 +9,7 @@ public readonly record struct LicensePlate(string Value) : IValueObject<LicenseP
 {
     public string Value { get; init; }
         = string.IsNullOrWhiteSpace(Value)
-        ? throw new ArgumentException("LicensePlate cannot be empty.")
+        ? throw Errors.LicensePlateCannotBeEmpty()
         : Value.Trim().ToUpper();
 
     public static LicensePlate Create(string value) => new(value);

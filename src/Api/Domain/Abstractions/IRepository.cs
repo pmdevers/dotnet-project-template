@@ -8,7 +8,7 @@ public interface IRepository<TAggregate, TId>
 
     public async Task DeleteAsync(TId id, CancellationToken cancellationToken = default)
     {
-        var entity = await TryFindAsync(id, cancellationToken) ?? throw new InvalidOperationException("Entity not found");
+        var entity = await TryFindAsync(id, cancellationToken) ?? throw Errors.EntityNotFound();
         Delete(entity);
     }
 }

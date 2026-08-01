@@ -44,7 +44,7 @@ public sealed class RedisEventConsumer(
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error handling Redis stream entry {EntryId}", entry.Id);
+                    _logger.RedisStreamEntryHandlingError(ex, entry.Id.ToString());
                 }
             }
         }
@@ -96,7 +96,7 @@ public sealed class RedisEventConsumer(
         {
             if (_logger.IsEnabled(LogLevel.Debug))
             {
-                _logger.LogDebug(ex, "Redis consumer group {ConsumerGroup} already exists for stream {StreamName}", _options.ConsumerGroup, _options.StreamName);
+                _logger.RedisConsumerGroupAlreadyExists(ex, _options.ConsumerGroup, _options.StreamName);
             }
         }
     }

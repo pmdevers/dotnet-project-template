@@ -31,7 +31,7 @@ public static class OptionConfigs
 
             if (logger.IsEnabled(LogLevel.Information))
             {
-                logger.LogInformation("{Project} were configured", "Options");
+                logger.OptionsConfigured("Options");
             }
 
             return builder;

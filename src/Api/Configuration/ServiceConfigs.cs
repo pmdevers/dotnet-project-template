@@ -14,7 +14,7 @@ public static class ServiceConfigs
 
             if (logger.IsEnabled(LogLevel.Information))
             {
-                logger.LogInformation("{Project} services registered", "Services");
+                logger.ServicesRegistered("Configuration");
             }
 
             return builder;

@@ -36,9 +36,7 @@ public static class EventBusExtensions
                 .ToArray();
 
             if (methods.Length == 0)
-                throw new InvalidOperationException(
-                    $"{handlerType.Name} has no methods matching the DomainEventHandler delegate signature " +
-                    $"'Task MethodName(T message, CancellationToken ct) where T : DomainEvent'.");
+                throw Errors.NoDomainEventHandlersMatchingSignature(handlerType.Name);
 
             services.AddTransient<THandler>();
 
